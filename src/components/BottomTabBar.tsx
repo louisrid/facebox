@@ -43,7 +43,6 @@ const BottomTabBar = () => {
   const { user, loading: authLoading } = useAuth();
 
   if (authLoading) return null;
-  if (location.pathname === "/reset-password") return null;
 
   const isAuthPage = location.pathname === "/auth";
   const authRedirect = isAuthPage ? new URLSearchParams(location.search).get("redirect") : null;
