@@ -10,7 +10,7 @@ import PageTitle from "@/components/PageTitle";
 import BackButton from "@/components/BackButton";
 
 import { toast } from "@/components/ui/sonner";
-import { fetchAndCacheOnboardingState, needsOnboardingRedirect } from "@/lib/onboardingState";
+import { fetchAndCacheOnboardingState } from "@/lib/onboardingState";
 import { registerBlockingLoader } from "@/lib/startupSplash";
 import { supabase } from "@/integrations/supabase/client";
 
