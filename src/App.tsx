@@ -369,6 +369,7 @@ const AppRoutes = () => {
     location.pathname.startsWith("/info/");
   const hasUserContext = !!user || hasCachedUser;
   const onStartScreen = location.pathname === "/" && !user && !hasCachedUser && !authLoading;
+  const hideChrome = onStartScreen || location.pathname === "/auth" || location.pathname === "/reset-password";
   const path = location.pathname;
   const needsGenerations = path === "/" || path === "/storage" || path === "/history";
   const needsCharacters = !isStaticOrAuthRoute;
@@ -525,7 +526,7 @@ const AppRoutes = () => {
       {(stillResolving || suppressUnauthRoutes) && <LoadingScreen />}
       {!suppressUnauthRoutes && (
         <>
-          {!onStartScreen && <HeaderTransition />}
+          {!hideChrome && <HeaderTransition />}
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/generate-face" element={<ChooseFace />} />
@@ -546,7 +547,7 @@ const AppRoutes = () => {
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {!onStartScreen && <BottomTabBar />}
+          {!hideChrome && <BottomTabBar />}
         </>
       )}
     </div>

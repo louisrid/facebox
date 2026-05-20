@@ -40,7 +40,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" style={{ overscrollBehavior: "contain" }}>
       <main className="relative z-[1] w-full max-w-lg md:max-w-2xl mx-auto px-[24px] md:px-[48px] pt-[34px] pb-[160px] md:flex md:flex-col md:items-center md:justify-center md:min-h-screen md:pt-0 md:pb-0">
         <div className="w-full md:max-w-md">
           <div className="flex items-center gap-[14px] mb-12">
@@ -80,7 +80,7 @@ const ResetPassword = () => {
                       required
                       minLength={6}
                       className="w-full border-[2px] border-[hsl(var(--border-mid))] text-foreground pl-10 pr-4 py-3.5 text-2xl font-extrabold lowercase placeholder:text-white/60 focus:outline-none focus:border-neon-yellow transition-colors"
-                      style={{ backgroundColor: "#000000", borderRadius: 8 }}
+                      style={{ backgroundColor: "#000000", borderRadius: 8, scrollMarginTop: "120px" }}
                       placeholder="••••••••"
                     />
                   </div>
@@ -97,7 +97,7 @@ const ResetPassword = () => {
                       required
                       minLength={6}
                       className="w-full border-[2px] border-[hsl(var(--border-mid))] text-foreground pl-10 pr-4 py-3.5 text-2xl font-extrabold lowercase placeholder:text-white/60 focus:outline-none focus:border-neon-yellow transition-colors"
-                      style={{ backgroundColor: "#000000", borderRadius: 8 }}
+                      style={{ backgroundColor: "#000000", borderRadius: 8, scrollMarginTop: "120px" }}
                       placeholder="••••••••"
                     />
                   </div>

@@ -150,7 +150,7 @@ const Home = () => {
       return;
     }
 
-    // No user → show the dashboard signed-out view (start slides temporarily disabled)
+    // No user → show the dashboard signed-out view
     setShowGuided(false);
     setSkipWelcome(true);
     setAutoOpenEvaluated(true);
