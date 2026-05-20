@@ -526,7 +526,7 @@ const AppRoutes = () => {
       {(stillResolving || suppressUnauthRoutes) && <LoadingScreen />}
       {!suppressUnauthRoutes && (
         <>
-          {!onStartScreen && <HeaderTransition />}
+          {!hideChrome && <HeaderTransition />}
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/generate-face" element={<ChooseFace />} />
