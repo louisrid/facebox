@@ -732,12 +732,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     heroVisited.current = true;
     markHeroSeen();
     if (step <= 0) {
-      if (isLoggedIn && skipWelcome) {
-        handleClose();
-        return;
-      }
-      setBackArrowShaking(true);
-      setTimeout(() => setBackArrowShaking(false), 500);
+      handleClose();
       return;
     }
 
