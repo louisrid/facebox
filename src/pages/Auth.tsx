@@ -221,6 +221,7 @@ const Auth = () => {
             />
 
             <button
+              type="button"
               onClick={handleEmailAuth}
               disabled={submitting || googleLoading}
               className="w-full h-14 md:h-16 flex items-center justify-center gap-2 disabled:opacity-50 transition-transform duration-150"
