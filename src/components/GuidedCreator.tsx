@@ -88,7 +88,7 @@ const NavArrow = ({ direction, onClick, disabled, colorOverride }: { direction: 
         className="flex items-center justify-center transition-opacity duration-150 w-[66px] h-[66px] md:w-[82px] md:h-[82px]"
         style={{
           borderRadius: 8,
-          backgroundColor: isForward ? fillColor : "hsl(var(--card))",
+          backgroundColor: isForward ? fillColor : "#000000",
           border: isForward ? "none" : `2px solid ${fillColor}`,
           outline: "none", padding: 0, cursor: "pointer",
           color: isForward ? "#000000" : "#ffffff",
