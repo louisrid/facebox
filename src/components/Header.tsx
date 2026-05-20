@@ -67,7 +67,7 @@ const Header = () => {
                 style={{
                   backgroundColor: "#050a10",
                   border: "2px solid #00e0ff",
-                  borderRadius: 9.6,
+                  borderRadius: 8,
                 }}
                 aria-label="buy gems"
               >
@@ -92,7 +92,7 @@ const Header = () => {
               style={{
                 backgroundColor: "#ffffff",
                 border: "2px solid #ffffff",
-                borderRadius: 9.6,
+                borderRadius: 8,
               }}
               aria-label="log in"
             >
