@@ -14,6 +14,7 @@ import { useAppData } from "@/contexts/AppDataContext";
 import { useOnboarded } from "@/hooks/useOnboarded";
 
 import LockOverlay from "@/components/LockOverlay";
+import StartScreen from "@/components/StartScreen";
 import ImageZoomViewer from "@/components/ImageZoomViewer";
 import { toast } from "@/components/ui/sonner";
 
