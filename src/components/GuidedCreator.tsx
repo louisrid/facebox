@@ -88,7 +88,7 @@ const NavArrow = ({ direction, onClick, disabled, colorOverride }: { direction: 
         className="flex items-center justify-center transition-opacity duration-150 w-[66px] h-[66px] md:w-[82px] md:h-[82px]"
         style={{
           borderRadius: 8,
-          backgroundColor: isForward ? fillColor : "hsl(var(--card))",
+          backgroundColor: isForward ? fillColor : "#000000",
           border: isForward ? "none" : `2px solid ${fillColor}`,
           outline: "none", padding: 0, cursor: "pointer",
           color: isForward ? "#000000" : "#ffffff",
@@ -1063,7 +1063,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
       {/* Content area — fades between slides, anchored to fixed top so emoji+title stay consistent */}
       <div className="flex-1 flex justify-center px-6 md:px-12 min-h-0 overflow-hidden">
         <div
-          className={`mx-auto flex w-full flex-col ${visualStepType === "signup" ? "max-w-md md:max-w-lg" : "max-w-sm md:max-w-lg"} ${visualStepType === "hero" || visualStepType === "signup" ? "items-center justify-center" : "items-center justify-start"}`}
+          className={`mx-auto flex w-full flex-col ${visualStepType === "signup" ? "max-w-md md:max-w-lg" : "max-w-sm md:max-w-lg"} ${visualStepType === "hero" || visualStepType === "signup" ? "items-center justify-center" : "items-center justify-center"}`}
           style={visualStepType === "hero" || visualStepType === "signup" ? undefined : { paddingTop: 0, paddingBottom: 0 }}
         >
           {isHeroSlide ? (
