@@ -715,6 +715,8 @@ const Home = () => {
             </div>
           </section>
         </main>
+          </>
+        )}
       </div>}
 
       <ImageZoomViewer
