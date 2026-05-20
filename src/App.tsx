@@ -368,6 +368,7 @@ const AppRoutes = () => {
     location.pathname.startsWith("/help/") ||
     location.pathname.startsWith("/info/");
   const hasUserContext = !!user || hasCachedUser;
+  const onStartScreen = location.pathname === "/" && !user && !hasCachedUser && !authLoading;
   const path = location.pathname;
   const needsGenerations = path === "/" || path === "/storage" || path === "/history";
   const needsCharacters = !isStaticOrAuthRoute;
