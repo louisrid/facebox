@@ -204,7 +204,7 @@ const Auth = () => {
               spellCheck={false}
               autoCorrect="off"
               className="w-full h-12 md:h-14 border-[2px] border-[hsl(var(--border-mid))] px-4 text-base font-extrabold lowercase text-foreground placeholder:text-white/60 outline-none focus:border-neon-yellow transition-colors"
-              style={{ backgroundColor: "#000000", borderRadius: 8 }}
+              style={{ backgroundColor: "#000000", borderRadius: 8, scrollMarginTop: "120px" }}
               disabled={submitting || googleLoading}
             />
             <input
