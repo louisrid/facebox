@@ -78,7 +78,7 @@ const History = () => {
               className="h-12 md:h-14 w-full max-w-[12rem] mx-auto flex items-center justify-center gap-2 bg-neon-yellow text-lg md:text-xl font-extrabold lowercase text-neon-yellow-foreground hover:opacity-90 transition-all"
               style={{ borderRadius: 8 }}
             >
-              create photo <Camera size={16} strokeWidth={2.5} />
+              create photo <Camera size={16} strokeWidth={3} />
             </button>
           </div>
         ) : (
@@ -98,12 +98,12 @@ const History = () => {
                   <div className="flex items-center justify-between">
                     {item.characterName && (
                       <div className="flex items-center gap-1.5 text-[10px] md:text-[11px] font-extrabold lowercase text-neon-yellow">
-                        <User size={10} strokeWidth={2.5} />
+                        <User size={10} strokeWidth={3} />
                         {item.characterName}
                       </div>
                     )}
                     <div className={`flex items-center gap-1 text-[10px] font-extrabold lowercase text-white ${!item.characterName ? "ml-auto" : ""}`}>
-                      <Calendar size={10} strokeWidth={2.5} />
+                      <Calendar size={10} strokeWidth={3} />
                       {formatDate(item.created_at)}
                     </div>
                   </div>
@@ -135,7 +135,7 @@ const History = () => {
                 style={{ backgroundColor: "hsl(var(--card))" }}
               >
                 <span className="truncate flex-1 text-left">{expanded.prompt}</span>
-                <Copy size={12} strokeWidth={2.5} className="shrink-0" />
+                <Copy size={12} strokeWidth={3} className="shrink-0" />
               </button>
             )}
             <a href={expanded.url} download={`facefox-${expanded.id}.png`} target="_blank" className="block">
@@ -144,7 +144,7 @@ const History = () => {
                 className="h-10 md:h-12 w-full flex items-center justify-center gap-2 border-[2px] border-[hsl(var(--border-mid))] text-base md:text-lg font-[900] lowercase text-white rounded-[8px]"
                 style={{ backgroundColor: "hsl(var(--card))" }}
               >
-                download <Download size={12} strokeWidth={2.5} />
+                download <Download size={12} strokeWidth={3} />
               </button>
             </a>
           </div>

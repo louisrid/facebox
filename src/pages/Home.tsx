@@ -511,7 +511,7 @@ const Home = () => {
                         <img src={char.face_image_url!} alt={char.name} data-home-image="1" className="h-full w-full object-cover" loading="eager" decoding="sync" onLoad={handleImageLoaded} onError={handleImageLoaded} />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <User size={24} strokeWidth={2.5} style={{ color: "#ffffff" }} />
+                          <User size={24} strokeWidth={3} style={{ color: "#ffffff" }} />
                         </div>
                       )}
                     </AspectRatio>
@@ -694,7 +694,7 @@ const Home = () => {
                         <img src={char.face_image_url!} alt={char.name} data-home-image="1" className="h-full w-full object-cover" loading="eager" decoding="sync" onLoad={handleImageLoaded} onError={handleImageLoaded} />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <User size={32} strokeWidth={2.5} style={{ color: "#ffffff" }} />
+                          <User size={32} strokeWidth={3} style={{ color: "#ffffff" }} />
                         </div>
                       )}
                     </AspectRatio>
@@ -733,7 +733,7 @@ const Home = () => {
                 style={{ backgroundColor: "hsl(var(--card))" }}
               >
                 <span className="truncate flex-1 text-left">{selectedImage.prompt}</span>
-                <Copy size={12} strokeWidth={2.5} className="shrink-0" />
+                <Copy size={12} strokeWidth={3} className="shrink-0" />
               </button>
             )}
             <a href={selectedImage.url} download={`facefox-${selectedImage.id}.png`} target="_blank" className="block">
@@ -742,7 +742,7 @@ const Home = () => {
                 className="h-10 md:h-12 w-full flex items-center justify-center gap-2 border-[2px] border-[hsl(var(--border-mid))] text-base md:text-lg font-[900] lowercase text-white rounded-[8px]"
                 style={{ backgroundColor: "hsl(var(--card))" }}
               >
-                download <Download size={12} strokeWidth={2.5} />
+                download <Download size={12} strokeWidth={3} />
               </button>
             </a>
           </div>

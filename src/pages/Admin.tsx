@@ -82,7 +82,7 @@ const PhotoModal = ({ photo, onClose }: { photo: any; onClose: () => void }) => 
                 style={{ backgroundColor: "hsl(var(--card))" }}
               >
                 <span className="line-clamp-2 flex-1 leading-snug">{photo.prompt}</span>
-                <Copy size={13} strokeWidth={2.5} className="shrink-0 mt-0.5" />
+                <Copy size={13} strokeWidth={3} className="shrink-0 mt-0.5" />
               </button>
             ) : (
               <p className="text-[12px] md:text-[14px] font-extrabold lowercase text-white leading-snug">{photo.prompt || "no prompt"}</p>
@@ -148,7 +148,7 @@ const AdminCharacterDetail = ({ character, onBack }: { character: any; onBack: (
           className="flex items-center justify-center shrink-0"
           style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: "#ffffff" }}
         >
-          <ArrowLeft size={14} strokeWidth={2.5} color="#000000" />
+          <ArrowLeft size={14} strokeWidth={3} color="#000000" />
         </button>
         <PageTitle className="mb-0">character</PageTitle>
       </div>
@@ -258,7 +258,7 @@ const UserStorageView = ({ userId, onBack, onReset }: { userId: string; onBack: 
           className="flex items-center justify-center shrink-0"
           style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: "#ffffff" }}
         >
-          <ArrowLeft size={14} strokeWidth={2.5} color="#000000" />
+          <ArrowLeft size={14} strokeWidth={3} color="#000000" />
         </button>
         <PageTitle className="mb-0">user storage</PageTitle>
       </div>
@@ -294,7 +294,7 @@ const UserStorageView = ({ userId, onBack, onReset }: { userId: string; onBack: 
                     ) : (
                       <AspectRatio ratio={3 / 4}>
                         <div className="flex h-full w-full items-center justify-center">
-                          <User size={24} strokeWidth={2.5} style={{ color: "#ffffff" }} />
+                          <User size={24} strokeWidth={3} style={{ color: "#ffffff" }} />
                         </div>
                       </AspectRatio>
                     )}
@@ -333,7 +333,7 @@ const UserStorageView = ({ userId, onBack, onReset }: { userId: string; onBack: 
                       style={{ backgroundColor: "hsl(var(--card))", color: "#ffffff", border: "2px solid hsl(var(--border-mid))", borderTop: "none" }}
                     >
                       download
-                      <Download size={12} strokeWidth={2.5} />
+                      <Download size={12} strokeWidth={3} />
                     </a>
                   </div>
                 ))}
@@ -400,7 +400,7 @@ const UserStorageView = ({ userId, onBack, onReset }: { userId: string; onBack: 
                       style={{ backgroundColor: "hsl(var(--card))" }}
                     >
                       <span className="line-clamp-2 flex-1 leading-snug">{expanded.prompt}</span>
-                      <Copy size={13} strokeWidth={2.5} className="shrink-0 mt-0.5" />
+                      <Copy size={13} strokeWidth={3} className="shrink-0 mt-0.5" />
                     </button>
                   </div>
                 )}
@@ -579,7 +579,7 @@ const Admin = () => {
                       { label: "photos", value: overview?.photos ?? 0, icon: ImageIcon },
                     ].map(({ label, value, icon: Icon }) => (
                       <div key={label} className="flex flex-col items-center justify-center py-4 md:py-6" style={{ borderRadius: 8, backgroundColor: "hsl(var(--card))" }}>
-                        <Icon size={16} strokeWidth={2.5} style={{ color: "#ffe603" }} className="mb-1 md:w-5 md:h-5" />
+                        <Icon size={16} strokeWidth={3} style={{ color: "#ffe603" }} className="mb-1 md:w-5 md:h-5" />
                         <span className="text-[28px] md:text-[36px] font-[900] text-white leading-none">{value.toLocaleString()}</span>
                         <span className="text-[9px] md:text-[11px] font-extrabold lowercase mt-1" style={{ color: "#ffffff" }}>{label}</span>
                       </div>

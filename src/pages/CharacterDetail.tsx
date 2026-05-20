@@ -502,7 +502,7 @@ const CharacterDetail = () => {
             className="w-full h-14 text-xl font-[900] lowercase transition-all flex items-center justify-center gap-2"
             style={{ backgroundColor: "#050a10", color: "#ffffff", border: "2px solid #00e0ff", borderRadius: 8 }}
           >
-            create photo <Gem size={14} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+            create photo <Gem size={14} strokeWidth={3} style={{ color: "#00e0ff" }} />
           </button>
         </div>
       </div>
@@ -600,7 +600,7 @@ const CharacterDetail = () => {
               className="w-full h-16 text-2xl font-[900] lowercase transition-all flex items-center justify-center gap-2"
               style={{ backgroundColor: "#050a10", color: "#ffffff", border: "2px solid #00e0ff", borderRadius: 8 }}
             >
-              create photo <Gem size={14} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+              create photo <Gem size={14} strokeWidth={3} style={{ color: "#00e0ff" }} />
             </button>
           </div>
         </div>

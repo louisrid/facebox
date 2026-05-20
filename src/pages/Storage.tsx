@@ -209,9 +209,9 @@ const Storage = () => {
             aria-label={hidden ? "show photos" : "hide photos"}
           >
             {hidden ? (
-              <Eye size={20} strokeWidth={2.5} color="#ffffff" />
+              <Eye size={20} strokeWidth={3} color="#ffffff" />
             ) : (
-              <EyeOff size={20} strokeWidth={2.5} color="#ffffff" />
+              <EyeOff size={20} strokeWidth={3} color="#ffffff" />
             )}
           </button>
         </div>
@@ -268,7 +268,7 @@ const Storage = () => {
                   style={{ backgroundColor: "hsl(var(--card))", color: "#ffffff", border: "2px solid hsl(var(--border-mid))", borderTop: "none" }}
                 >
                    download
-                   <Download size={12} strokeWidth={2.5} />
+                   <Download size={12} strokeWidth={3} />
                 </a>
               </motion.div>
               );
@@ -326,14 +326,14 @@ const Storage = () => {
                    style={{ backgroundColor: "hsl(var(--card))" }}
                  >
                    <span className="truncate flex-1 text-left">{expanded!.prompt}</span>
-                   <Copy size={13} strokeWidth={2.5} className="shrink-0" />
+                   <Copy size={13} strokeWidth={3} className="shrink-0" />
                 </button>
               </div>
             )}
             <div className="p-3 md:p-4 flex gap-2" style={{ backgroundColor: "hsl(var(--card))", borderRadius: "0 0 10px 10px" }}>
               <a href={expanded.url} download={`facefox-${expanded.id}.png`} target="_blank" className="flex-1">
                 <Button variant="outline" className="w-full h-10 md:h-12 border-[2px] border-[hsl(var(--border-mid))] text-base md:text-lg font-[900] lowercase hover:opacity-90" style={{ backgroundColor: "hsl(var(--card))", color: "#ffffff" }}>
-                  download <Download size={12} strokeWidth={2.5} />
+                  download <Download size={12} strokeWidth={3} />
                 </Button>
               </a>
               <Button
@@ -341,7 +341,7 @@ const Storage = () => {
                 className="h-10 md:h-12 px-3 md:px-4 border-[1px] border-destructive bg-[#1a0808] text-destructive hover:bg-destructive hover:text-destructive-foreground"
                 onClick={() => handleDelete(expanded)}
               >
-                <Trash2 size={12} strokeWidth={2.5} />
+                <Trash2 size={12} strokeWidth={3} />
               </Button>
             </div>
           </>

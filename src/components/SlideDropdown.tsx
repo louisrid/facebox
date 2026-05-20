@@ -172,7 +172,7 @@ const SlideDropdown = ({ label, value, options, onChange }: SlideDropdownProps) 
           <span className="flex-1 text-left text-base md:text-lg font-[900] lowercase text-black">{selected.label}</span>
           <ChevronDown
             size={18}
-            strokeWidth={2.5}
+            strokeWidth={3}
             className={`text-black/40 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           />
         </button>

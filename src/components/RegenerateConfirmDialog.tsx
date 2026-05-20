@@ -75,7 +75,7 @@ const RegenerateConfirmDialog = ({
                   ) : (
                     <>
                       {confirmLabel}
-                      <Gem size={13} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                      <Gem size={13} strokeWidth={3} style={{ color: "#00e0ff" }} />
                     </>
                   )}
                 </button>

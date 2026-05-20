@@ -925,14 +925,14 @@ const ChooseFace = () => {
                     >
                       {!onboardingComplete ? (
                         <>
-                          <RefreshCw size={16} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                          <RefreshCw size={16} strokeWidth={3} style={{ color: "#00e0ff" }} />
                           regenerate all
                         </>
                       ) : (
                         <>
-                          <RefreshCw size={16} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                          <RefreshCw size={16} strokeWidth={3} style={{ color: "#00e0ff" }} />
                           regenerate all <span style={{ color: "#00e0ff" }}>•</span> 30
-                          <Gem size={13} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                          <Gem size={13} strokeWidth={3} style={{ color: "#00e0ff" }} />
                         </>
                       )}
                     </button>

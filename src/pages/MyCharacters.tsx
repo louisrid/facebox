@@ -75,7 +75,7 @@ const MyCharacters = () => {
           >
             <AspectRatio ratio={3 / 4}>
               <div className="flex h-full w-full items-center justify-center">
-                <Plus size={28} strokeWidth={2.5} className="text-white md:w-8 md:h-8" />
+                <Plus size={28} strokeWidth={3} className="text-white md:w-8 md:h-8" />
               </div>
             </AspectRatio>
           </button>
