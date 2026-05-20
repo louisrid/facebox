@@ -382,7 +382,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => { if (e.key === "Enter") handleEmailAuth(); }}
             className="w-full h-12 px-4 text-base font-extrabold lowercase text-white placeholder:text-white/30 outline-none transition-colors duration-150 focus:border-neon-yellow"
-            style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))" }}
+            style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))", scrollMarginTop: "120px" }}
             disabled={googleLoading}
           />
 
