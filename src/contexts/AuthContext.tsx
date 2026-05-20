@@ -198,17 +198,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    // Clear cached state immediately to prevent stale UI flashes
+    // Clear local state synchronously so the UI updates instantly,
+    // regardless of how long Supabase takes to respond.
+    setUser(null);
+    try { localStorage.removeItem("facefox_cached_user"); } catch {}
+    clearSpecialAccountCache();
+    clearCachedOnboardingState();
     try {
-      // Clear all facefox session data
       const keysToRemove = Object.keys(sessionStorage).filter(k => k.startsWith("facefox_"));
       keysToRemove.forEach(k => sessionStorage.removeItem(k));
     } catch {}
-    localStorage.removeItem("facefox_visited_character");
-    localStorage.removeItem("facefox_pending_creation");
-    localStorage.removeItem("facefox_draft_backup");
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    try { localStorage.removeItem("facefox_visited_character"); } catch {}
+    try { localStorage.removeItem("facefox_pending_creation"); } catch {}
+    try { localStorage.removeItem("facefox_draft_backup"); } catch {}
+    // Fire Supabase signOut in the background — do NOT await.
+    // The onAuthStateChange listener will still fire SIGNED_OUT when it completes
+    // and will run its own cleanup (idempotent against what we just did).
+    void supabase.auth.signOut().catch((err) => {
+      console.error("background supabase signOut failed:", err);
+    });
   };
 
   const resetPassword = async (email: string) => {
