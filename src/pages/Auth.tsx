@@ -70,23 +70,13 @@ const Auth = () => {
 
     const checkNewAccount = async () => {
       try {
-        const resolvedState = await fetchAndCacheOnboardingState(user.id);
+        await fetchAndCacheOnboardingState(user.id);
         if (cancelled) return;
-
-        if (needsOnboardingRedirect(resolvedState)) {
-          await supabase.auth.signOut();
-          sessionStorage.setItem("facefox_show_start_toast", "1");
-          navigate("/", { replace: true });
-          return;
-        }
-
         navigate(redirectTo, { replace: true });
       } catch (err) {
         console.error("[auth-check] error:", err);
         if (!cancelled) navigate(redirectTo, { replace: true });
       } finally {
-        // Keep splash up a tick after navigate so the target page has time to mount
-        // and register its own blocking loader (e.g. Home.tsx) before splash hides.
         setTimeout(safeUnregister, 600);
       }
     };
