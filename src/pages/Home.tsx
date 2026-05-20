@@ -338,6 +338,13 @@ const Home = () => {
       />
       {!pageHidden && <div className="relative flex h-full flex-col">
 
+        {(!user && !hasCachedUser && autoOpenEvaluated) ? (
+          <StartScreen
+            onStart={() => { sessionStorage.removeItem(DISMISSED_KEY); setShowGuided(true); }}
+            onLogin={() => navigate("/auth")}
+          />
+        ) : (
+          <>
         <main className="relative z-[1] mx-auto w-full max-w-lg px-[24px] pt-[75px] pb-[160px] md:hidden">
           {/* Hero */}
           <h1 className="flex w-full flex-col items-start font-[900] lowercase leading-[0.94] tracking-[-1.8px] text-white mb-0 mt-0 text-left" style={{ fontSize: "clamp(34px, 11.5vw, 48px)" }}>
