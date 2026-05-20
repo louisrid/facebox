@@ -325,7 +325,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
 
   if (handoffLoading) {
     return (
-      <div className="flex min-h-full w-full flex-col items-center justify-center gap-4">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4">
         <h2 className="text-2xl font-[900] lowercase tracking-tight text-foreground">loading...</h2>
         <div className="h-3 w-full max-w-[14rem] overflow-hidden bg-white/10">
           <div className="facefox-loading-bar h-full w-[60%] bg-neon-yellow" />
@@ -335,7 +335,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
   }
 
   return (
-    <div className="flex min-h-full w-full flex-col items-center justify-center">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center px-8 w-full max-w-md">
         <span
           className="text-[52px] md:text-[70px] mb-3 md:mb-4 inline-block"
@@ -800,7 +800,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   const renderHero = () => {
     const on = heroPhase >= 2;
     return (
-      <div className="flex w-full flex-col items-center justify-center" style={{ minHeight: '100%', position: 'relative' }}>
+      <div className="flex w-full flex-col items-center justify-center" style={{ minHeight: '100vh', position: 'relative' }}>
         {/* <div style={{ position: 'relative', width: 298, height: 298, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
           {[
             { size: 294, w: 8, spd: 0.45, del: 0.22, dash: false, gapFraction: 0.08, baseRotation: 115 },
