@@ -549,7 +549,7 @@ const AppRoutes = () => {
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {!hideChrome && <BottomTabBar />}
+          {!hideTabBar && <BottomTabBar />}
         </>
       )}
     </div>
