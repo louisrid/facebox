@@ -335,7 +335,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
   }
 
   return (
-    <div className="flex min-h-full w-full flex-col items-center justify-center">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center px-8 w-full max-w-md">
         <span
           className="text-[52px] md:text-[70px] mb-3 md:mb-4 inline-block"
