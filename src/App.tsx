@@ -546,7 +546,7 @@ const AppRoutes = () => {
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <BottomTabBar />
+          {!onStartScreen && <BottomTabBar />}
         </>
       )}
     </div>
