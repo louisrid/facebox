@@ -64,13 +64,6 @@ const Home = () => {
     }
   }, [openCreatorRequested]);
 
-  useEffect(() => {
-    const shouldToast = sessionStorage.getItem("facefox_show_start_toast");
-    if (shouldToast) {
-      sessionStorage.removeItem("facefox_show_start_toast");
-      setTimeout(() => toast.error("press start instead!"), 500);
-    }
-  }, []);
   // Derive images and characters from global cache
   const images = useMemo(() => {
     return cachedGens
