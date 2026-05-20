@@ -158,8 +158,8 @@ const Auth = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <main className="relative z-[1] w-full max-w-lg mx-auto px-[24px] pt-7 md:max-w-2xl md:px-[44px]">
+    <div className="relative min-h-screen overflow-hidden flex items-center justify-center" style={{ overscrollBehavior: "contain" }}>
+      <main className="relative z-[1] w-full max-w-lg mx-auto px-[24px] md:max-w-2xl md:px-[44px]">
         <div className="w-full md:max-w-md md:mx-auto">
           <div className="mb-7 flex items-center gap-4">
             <BackButton always />
@@ -204,7 +204,7 @@ const Auth = () => {
               spellCheck={false}
               autoCorrect="off"
               className="w-full h-12 md:h-14 border-[2px] border-[hsl(var(--border-mid))] px-4 text-base font-extrabold lowercase text-foreground placeholder:text-white/60 outline-none focus:border-neon-yellow transition-colors"
-              style={{ backgroundColor: "#000000", borderRadius: 8 }}
+              style={{ backgroundColor: "#000000", borderRadius: 8, scrollMarginTop: "120px" }}
               disabled={submitting || googleLoading}
             />
             <input
@@ -216,11 +216,12 @@ const Auth = () => {
               spellCheck={false}
               autoCorrect="off"
               className="w-full h-12 md:h-14 border-[2px] border-[hsl(var(--border-mid))] px-4 text-base font-extrabold lowercase text-foreground placeholder:text-white/60 outline-none focus:border-neon-yellow transition-colors"
-              style={{ backgroundColor: "#000000", borderRadius: 8 }}
+              style={{ backgroundColor: "#000000", borderRadius: 8, scrollMarginTop: "120px" }}
               disabled={submitting || googleLoading}
             />
 
             <button
+              type="button"
               onClick={handleEmailAuth}
               disabled={submitting || googleLoading}
               className="w-full h-14 md:h-16 flex items-center justify-center gap-2 disabled:opacity-50 transition-transform duration-150"

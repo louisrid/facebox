@@ -147,7 +147,7 @@ const TopUps = () => {
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1.5">
-                      <Gift size={20} strokeWidth={2.5} className="text-white" />
+                      <Gift size={20} strokeWidth={3} className="text-white" />
                       <span className="text-lg font-[900] lowercase text-white">welcome gift!</span>
                     </div>
                     <p className="text-[13px] font-[800] lowercase text-white leading-tight mb-3">
@@ -163,14 +163,14 @@ const TopUps = () => {
                         "claiming..."
                       ) : (
                         <>
-                          <Sparkles size={16} strokeWidth={2.5} />
+                          <Sparkles size={16} strokeWidth={3} />
                           claim 5 free gems
                         </>
                       )}
                     </button>
                   </div>
                   <div className="flex items-center justify-center w-16 h-16 rounded-full bg-card">
-                    <Gem size={28} strokeWidth={2.5} className="text-white" />
+                    <Gem size={28} strokeWidth={3} className="text-white" />
                   </div>
                 </div>
               </motion.div>
@@ -192,7 +192,7 @@ const TopUps = () => {
                 <div>
                   <span className="block text-[32px] leading-[0.95] font-[900] lowercase text-white">{pack.name}</span>
                   <span className="inline-flex items-center gap-1.5 text-[32px] leading-[0.95] font-[900] lowercase text-white">
-                    pack <Gem size={20} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                    pack <Gem size={20} strokeWidth={3} style={{ color: "#00e0ff" }} />
                   </span>
                 </div>
 
@@ -209,7 +209,7 @@ const TopUps = () => {
                     className="inline-flex items-center gap-1.5 rounded-[8px] px-3.5 py-1.5 text-[13px] font-[900] lowercase text-white"
                     style={{ backgroundColor: "#050a10", border: "2px solid #00e0ff" }}
                   >
-                    <Gem size={13} strokeWidth={2.5} style={{ color: "#00e0ff" }} />
+                    <Gem size={13} strokeWidth={3} style={{ color: "#00e0ff" }} />
                     {pack.gems} gems
                   </span>
                 </div>

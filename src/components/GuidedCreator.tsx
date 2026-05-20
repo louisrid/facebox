@@ -732,12 +732,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     heroVisited.current = true;
     markHeroSeen();
     if (step <= 0) {
-      if (isLoggedIn && skipWelcome) {
-        handleClose();
-        return;
-      }
-      setBackArrowShaking(true);
-      setTimeout(() => setBackArrowShaking(false), 500);
+      handleClose();
       return;
     }
 
@@ -955,7 +950,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
                 className="flex h-[56px] w-[56px] md:h-[66px] md:w-[66px] shrink-0 items-center justify-center text-black transition-opacity duration-150"
                 style={{ borderRadius: 8, backgroundColor: Y }}
               >
-                <RefreshCw size={20} strokeWidth={2.5} />
+                <RefreshCw size={20} strokeWidth={3} />
               </motion.button>
             </div>
           </div>
@@ -1006,7 +1001,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
                 className="w-full max-w-[17rem] h-14 text-xl font-[900] lowercase transition-all flex items-center justify-center gap-1.5 mx-auto"
                 style={{ backgroundColor: "#050a10", color: "#ffffff", borderRadius: 8, border: "2px solid #00e0ff" }}
               >
-                {showGemCost ? (<>create <span style={{ color: "#00e0ff" }}>•</span> 50 <Gem size={15} strokeWidth={2.5} style={{ color: "#00e0ff" }} /></>) : "create 🖌️"}
+                {showGemCost ? (<>create <span style={{ color: "#00e0ff" }}>•</span> 50 <Gem size={15} strokeWidth={3} style={{ color: "#00e0ff" }} /></>) : "create 🖌️"}
               </button>
             </div>
           </div>

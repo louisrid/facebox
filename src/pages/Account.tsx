@@ -86,7 +86,7 @@ const Account = () => {
             onClick={() => toast("coming soon")}
           >
             <span className="leading-none">change password</span>
-            <Lock size={18} strokeWidth={2.5} className="text-white shrink-0" />
+            <Lock size={18} strokeWidth={3} className="text-white shrink-0" />
           </button>
 
           <button
@@ -94,7 +94,7 @@ const Account = () => {
             onClick={() => toast("coming soon")}
           >
             <span className="leading-none">subscription</span>
-            <Gem size={18} strokeWidth={2.5} className="text-white shrink-0" />
+            <Gem size={18} strokeWidth={3} className="text-white shrink-0" />
           </button>
 
           <button

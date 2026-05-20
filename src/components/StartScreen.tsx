@@ -36,7 +36,7 @@ const StartScreen = ({ onStart, onLogin }: StartScreenProps) => {
             }}
           >
             <span className="text-[15px] font-[900] lowercase leading-[1.0] text-black text-left">start</span>
-            <ArrowRight size={22} strokeWidth={2.5} style={{ color: "#000000" }} />
+            <ArrowRight size={22} strokeWidth={3} style={{ color: "#000000" }} />
           </button>
 
           <button
@@ -56,7 +56,7 @@ const StartScreen = ({ onStart, onLogin }: StartScreenProps) => {
             }}
           >
             <span className="relative z-[1] text-[15px] font-[900] lowercase leading-[1.0] text-left" style={{ color: "#ffffff" }}>log in</span>
-            <ArrowRight size={22} strokeWidth={2.5} style={{ color: "#ffffff" }} />
+            <ArrowRight size={22} strokeWidth={3} style={{ color: "#ffffff" }} />
           </button>
         </div>
       </div>

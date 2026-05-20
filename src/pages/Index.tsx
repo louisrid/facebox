@@ -224,8 +224,8 @@ const CreateButton = ({ onClick, disabled, isGenerating, onboardingComplete }: {
     {isGenerating ? (
       <><Loader2 className="animate-spin" size={18} />creating...</>
     ) : onboardingComplete ? (
-      <>create photo <span style={{ color: "#00e0ff" }}>·</span> 10 <Gem size={14} strokeWidth={2.5} style={{ color: "#00e0ff" }} /></>
-    ) : <>create photo <Gem size={14} strokeWidth={2.5} style={{ color: "#00e0ff" }} /></>}
+      <>create photo <span style={{ color: "#00e0ff" }}>·</span> 10 <Gem size={14} strokeWidth={3} style={{ color: "#00e0ff" }} /></>
+    ) : <>create photo <Gem size={14} strokeWidth={3} style={{ color: "#00e0ff" }} /></>}
   </button>
 );
 
@@ -751,7 +751,7 @@ const Index = () => {
               <span className="flex-1 text-left text-xl font-[900] lowercase text-black truncate">
                 {selectedChar?.name || "select character"}
               </span>
-              <ChevronDown size={18} strokeWidth={2.5} className={`text-black/40 transition-transform duration-200 ${charDropdownOpen ? "rotate-180" : ""}`} />
+              <ChevronDown size={18} strokeWidth={3} className={`text-black/40 transition-transform duration-200 ${charDropdownOpen ? "rotate-180" : ""}`} />
             </button>
           </div>
 
@@ -849,7 +849,7 @@ const Index = () => {
                 <span className="flex-1 text-left text-xl font-[900] lowercase text-black truncate">
                   {selectedChar?.name || "select character"}
                 </span>
-                <ChevronDown size={20} strokeWidth={2.5} className={`text-black/40 transition-transform duration-200 ${charDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown size={20} strokeWidth={3} className={`text-black/40 transition-transform duration-200 ${charDropdownOpen ? "rotate-180" : ""}`} />
               </button>
             </div>
 
