@@ -10,7 +10,7 @@ import PageTitle from "@/components/PageTitle";
 import BackButton from "@/components/BackButton";
 
 import { toast } from "@/components/ui/sonner";
-import { fetchAndCacheOnboardingState } from "@/lib/onboardingState";
+import { fetchAndCacheOnboardingState, needsOnboardingRedirect } from "@/lib/onboardingState";
 import { registerBlockingLoader } from "@/lib/startupSplash";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -73,7 +73,7 @@ const Auth = () => {
         const resolvedState = await fetchAndCacheOnboardingState(user.id);
         if (cancelled) return;
 
-        if (!resolvedState.onboardingComplete) {
+        if (needsOnboardingRedirect(resolvedState)) {
           await supabase.auth.signOut();
           sessionStorage.setItem("facefox_show_start_toast", "1");
           navigate("/", { replace: true });
