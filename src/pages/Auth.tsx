@@ -73,7 +73,7 @@ const Auth = () => {
         const resolvedState = await fetchAndCacheOnboardingState(user.id);
         if (cancelled) return;
 
-        if (!resolvedState.onboardingComplete) {
+        if (needsOnboardingRedirect(resolvedState)) {
           await supabase.auth.signOut();
           sessionStorage.setItem("facefox_show_start_toast", "1");
           navigate("/", { replace: true });
