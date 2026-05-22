@@ -102,17 +102,6 @@ const Home = () => {
     if (user && pending && lockStateResolved && charsLoaded) {
       localStorage.removeItem("facefox_pending_creation");
 
-      if (resolvedCharacterCount > 0) {
-        sessionStorage.removeItem("facefox_signup_gate_active");
-        sessionStorage.removeItem("facefox_post_auth_home");
-        sessionStorage.removeItem("facefox_guided_flow_state");
-        sessionStorage.setItem(DISMISSED_KEY, "1");
-        toast("acc exists!");
-        setSkipWelcome(true);
-        setShowGuided(false);
-        setAutoOpenEvaluated(true);
-        return;
-      }
 
       try {
         const sel = JSON.parse(pending);

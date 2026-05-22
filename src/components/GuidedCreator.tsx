@@ -335,7 +335,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center">
+    <div className="flex w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center px-8 w-full max-w-md">
         <span
           className="text-[52px] md:text-[70px] mb-3 md:mb-4 inline-block"
@@ -1035,7 +1035,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
         }}
       >
       {/* facebox wordmark — centered at top, matching the header's logo position on non-creator routes */}
-      {visualStepType !== "hero" && visualStepType !== "signup" && (
+      {visualStepType !== "hero" && (
         <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
           <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
             <span
