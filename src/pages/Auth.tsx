@@ -158,8 +158,8 @@ const Auth = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden" style={{ overscrollBehavior: "contain" }}>
-      <main className="relative z-[1] w-full max-w-lg md:max-w-3xl mx-auto px-[24px] md:px-[48px] pt-[34px] pb-[160px]">
+    <div className="relative min-h-screen overflow-hidden flex items-center justify-center" style={{ overscrollBehavior: "contain" }}>
+      <main className="relative z-[1] w-full max-w-lg md:max-w-3xl mx-auto px-[24px] md:px-[48px] pb-[40px]">
         <div className="w-full md:max-w-md md:mx-auto">
           <div className="flex items-center gap-[14px] mb-12">
             <BackButton always />
