@@ -148,13 +148,13 @@ const NavArrow = ({
     >
       {direction === "left" ? (
         <svg width="22" height="18" viewBox="0 0 20 16" fill="none" className="md:w-[28px] md:h-[22px]">
-          <path d="M8 1L1.5 8L8 15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <line x1="2" y1="8" x2="18.5" y2="8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M8 1L1.5 8L8 15" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="2" y1="8" x2="18.5" y2="8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
         </svg>
       ) : (
         <svg width="22" height="18" viewBox="0 0 20 16" fill="none" className="md:w-[28px] md:h-[22px]">
-          <path d="M12 1L18.5 8L12 15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <line x1="1.5" y1="8" x2="18" y2="8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M12 1L18.5 8L12 15" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="1.5" y1="8" x2="18" y2="8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
         </svg>
       )}
     </button>
