@@ -47,6 +47,13 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+
+  useEffect(() => {
     if (!user) return;
 
     let cancelled = false;
@@ -158,13 +165,13 @@ const Auth = () => {
   }
 
   return (
-    <div className="relative h-[calc(100dvh-57px)] overflow-hidden" style={{ overscrollBehavior: "contain" }}>
-      <main className="relative z-[1] w-full max-w-lg md:max-w-3xl mx-auto px-[24px] md:px-[48px] pt-[24px] pb-[16px]">
+    <div className="relative min-h-screen overflow-hidden">
+      <main className="relative z-[1] w-full max-w-lg md:max-w-6xl mx-auto px-[24px] md:px-[48px] pt-[34px] pb-[160px]">
+        <div className="flex items-center gap-[14px] mb-12">
+          <BackButton always />
+          <PageTitle className="mb-0">log in</PageTitle>
+        </div>
         <div className="w-full md:max-w-md md:mx-auto">
-          <div className="flex items-center gap-[14px] mb-6">
-            <BackButton always />
-            <PageTitle className="mb-0">log in</PageTitle>
-          </div>
 
           <div className="rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             {!inWebView && (
