@@ -128,7 +128,7 @@ export const GemsProvider = ({ children }: { children: ReactNode }) => {
     if (cachedClaimed) {
       setHasClaimedFreeGems(true);
     }
-    setLoading(true);
+    setLoading(cachedGems === null);
     fetchGems();
     // Refetch gems when the tab regains focus, the user navigates back, or when
     // generations change (every photo costs gems, so balance is out of date).
