@@ -25,7 +25,13 @@ export const GemsProvider = ({ children }: { children: ReactNode }) => {
     const cached = localStorage.getItem("facefox_gems_balance:" + userId);
     return cached !== null ? Number(cached) : 0;
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const rawUser = localStorage.getItem("facefox_cached_user");
+    const userId = rawUser ? (() => { try { return JSON.parse(rawUser)?.id; } catch { return null; } })() : localStorage.getItem("facefox_cached_user_id");
+    if (!userId) return false;
+    return localStorage.getItem("facefox_gems_balance:" + userId) === null;
+  });
   const [hasClaimedFreeGems, setHasClaimedFreeGems] = useState(() => {
     if (typeof window === "undefined") return false;
     const rawUser = localStorage.getItem("facefox_cached_user");
