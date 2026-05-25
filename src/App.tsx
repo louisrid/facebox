@@ -342,6 +342,7 @@ const AppRoutes = () => {
   const location = useLocation();
   const { loading: authLoading, user } = useAuth();
   const { characters, generations, charactersReady, generationsReady } = useAppData();
+  const { loading: gemsLoading } = useGems();
   const [blockingLoaders, setBlockingLoaders] = useState(() => getBlockingLoaderCount());
   
   const [criticalImagesReady, setCriticalImagesReady] = useState(false);
