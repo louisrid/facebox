@@ -4,7 +4,7 @@ Context file for new developers or AI sessions. Read before writing code. Keep i
 
 ## What Facefox is
 
-AI character creator at facefox.lovable.app. Users pick traits → generate 3 face options → produce photos in scenes/outfits. Stack: React + TypeScript + Vite, Supabase (auth, DB, edge functions), xAI Grok Imagine Image API. GitHub under louisrid org with 2-way Lovable sync.
+AI character creator at facebox.dev. Users pick traits → generate 3 face options → produce photos in scenes/outfits. Stack: React + TypeScript + Vite, Supabase (auth, DB, edge functions), xAI Grok Imagine Image API. GitHub under louisrid org with 2-way Lovable sync.
 
 ## Critical rules
 
@@ -99,7 +99,7 @@ Synchronous first-frame reads: `facefox_cached_user`, `facefox_onboarding_state`
 - Corners: 10px radius
 - Font: `-apple-system, 'SF Pro Display', system-ui`, weight 800-900
 - Gem-cost buttons: #050a10 fill, 2px #00e0ff border
-- Bottom padding: all pages use `pb-[280px]` except mobile create-photo (Index.tsx) which uses `pb-[140px]` (fixed create button sits below with its own gradient)
+- Bottom padding: tab-bar pages use `pb-[160px]`. Mobile create-photo (Index.tsx) uses `pb-[128px]`. /auth and /reset-password use `pb-[40px]` (no tab bar).
 
 ## Admin
 
@@ -108,7 +108,7 @@ Synchronous first-frame reads: `facefox_cached_user`, `facefox_onboarding_state`
 ## Common changes
 
 - **New gem cost**: edit constants at top of `generate/index.ts`. Mirror existing `if (!onboardingUser)` guard pattern to keep it free during onboarding.
-- **New page**: create file in `src/pages/`, add `<Route>` in App.tsx, use `pb-[280px]` bottom, register blocking loader in useLayoutEffect if loading data.
+- **New page**: create file in `src/pages/`, add `<Route>` in App.tsx, use `pb-[160px]` bottom (or `pb-[40px]` if no tab bar), register blocking loader in useLayoutEffect if loading data.
 - **New menu item**: add to `menuItems` array in Header.tsx, handle in dropdown onClick AND touchend navigation branch.
 - **Fade duration**: long fades 0.45s easeInOut, short 0.15-0.25s. Don't add new values without checking existing.
 
