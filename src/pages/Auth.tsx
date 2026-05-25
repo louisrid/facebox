@@ -47,9 +47,20 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    const prev = document.body.style.overflow;
+    const root = document.getElementById("root");
+    const prev = {
+      body: document.body.style.overflow,
+      html: document.documentElement.style.overflow,
+      root: root?.style.overflow ?? "",
+    };
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    document.documentElement.style.overflow = "hidden";
+    if (root) root.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev.body;
+      document.documentElement.style.overflow = prev.html;
+      if (root) root.style.overflow = prev.root;
+    };
   }, []);
 
 
@@ -165,8 +176,8 @@ const Auth = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <main className="relative z-[1] w-full max-w-lg md:max-w-6xl mx-auto px-[24px] md:px-[48px] pt-[34px] pb-[160px]">
+    <div className="relative overflow-hidden">
+      <main className="relative z-[1] w-full max-w-lg md:max-w-6xl mx-auto px-[24px] md:px-[48px] pt-[34px] pb-[40px]">
         <div className="flex items-center gap-[14px] mb-12">
           <BackButton always />
           <PageTitle className="mb-0">log in</PageTitle>
