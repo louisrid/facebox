@@ -7,7 +7,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { CreditsProvider } from "@/contexts/CreditsContext";
+import { CreditsProvider, useGems } from "@/contexts/CreditsContext";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { AppDataProvider, useAppData } from "@/contexts/AppDataContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -342,6 +342,7 @@ const AppRoutes = () => {
   const location = useLocation();
   const { loading: authLoading, user } = useAuth();
   const { characters, generations, charactersReady, generationsReady } = useAppData();
+  const { loading: gemsLoading } = useGems();
   const [blockingLoaders, setBlockingLoaders] = useState(() => getBlockingLoaderCount());
   
   const [criticalImagesReady, setCriticalImagesReady] = useState(false);
@@ -508,6 +509,7 @@ const AppRoutes = () => {
     (!authLoading && !!user && location.pathname === "/auth") ||
     dataStillLoading ||
     onboardingStillLoading ||
+    (!!user && !isStaticOrAuthRoute && gemsLoading) ||
     blockingLoaders > 0;
   const suppressUnauthRoutes =
     hasCachedUser && authLoading && !user &&
