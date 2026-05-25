@@ -63,16 +63,16 @@ const Header = () => {
 
               <button
                 onClick={() => goOrAuth("/top-ups")}
-                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 select-none h-[37px] md:h-[42px]"
+                className="flex items-center gap-1.5 md:gap-2 px-3.5 md:px-4 select-none h-[40px] md:h-[46px]"
                 style={{
                   backgroundColor: "#050a10",
-                  border: "2px solid #00e0ff",
+                  border: "3px solid #00e0ff",
                   borderRadius: 8,
                 }}
                 aria-label="buy gems"
               >
-                <Gem size={12} strokeWidth={3} className="md:!w-[15px] md:!h-[15px]" style={{ color: "#00e0ff" }} />
-                <span className="text-[12px] md:text-[15px] font-[900] lowercase text-white leading-none">{gems}</span>
+                <Gem size={14} strokeWidth={3} className="md:!w-[17px] md:!h-[17px]" style={{ color: "#00e0ff" }} />
+                <span className="text-[14px] md:text-[17px] font-[900] lowercase text-white leading-none">{gems}</span>
               </button>
 
               <button
