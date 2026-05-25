@@ -509,6 +509,7 @@ const AppRoutes = () => {
     (!authLoading && !!user && location.pathname === "/auth") ||
     dataStillLoading ||
     onboardingStillLoading ||
+    (!!user && !isStaticOrAuthRoute && gemsLoading) ||
     blockingLoaders > 0;
   const suppressUnauthRoutes =
     hasCachedUser && authLoading && !user &&
