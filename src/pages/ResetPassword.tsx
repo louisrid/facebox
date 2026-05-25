@@ -40,7 +40,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="relative h-[100dvh] overflow-hidden" style={{ overscrollBehavior: "contain" }}>
+    <div className="relative h-[calc(100dvh-57px)] overflow-hidden" style={{ overscrollBehavior: "contain" }}>
       <main className="relative z-[1] w-full max-w-lg md:max-w-2xl mx-auto px-[24px] md:px-[48px] pt-[24px] pb-[16px]">
         <div className="w-full md:max-w-md">
           <div className="flex items-center gap-[14px] mb-6">
