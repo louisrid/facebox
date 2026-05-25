@@ -31,35 +31,40 @@ const Header = () => {
       
       <div className="relative">
         <div className={headerContainerClass}>
-          <div className="flex items-center gap-[10px] md:gap-[12px]">
-            <button onClick={handleLogoClick} className="flex items-center transition-opacity duration-150">
-              <span
-                className="text-[20px] md:text-[27px] text-white tracking-[-0.5px] leading-none lowercase"
-                style={{ fontWeight: 900 }}
-              >
-                facebox
-              </span>
+          <button onClick={handleLogoClick} className="flex items-center transition-opacity duration-150">
+            <span
+              className="text-[20px] md:text-[27px] text-white tracking-[-0.5px] leading-none lowercase"
+              style={{ fontWeight: 900 }}
+            >
+              facebox
+            </span>
+          </button>
+
+          {isLoggedIn && (
+            <button
+              onClick={() => goOrAuth("/account")}
+              className="flex items-center justify-center shrink-0 transition-transform duration-150 w-[37px] h-[37px] md:w-[42px] md:h-[42px]"
+              style={{
+                borderRadius: "50%",
+                backgroundColor: "#000000",
+                border: `2px solid ${subscribed ? "hsl(var(--neon-green))" : "#ffe603"}`,
+              }}
+              aria-label="my account"
+            >
+              <User size={18} strokeWidth={3.5} className="md:!w-[21px] md:!h-[21px]" style={{ color: "#ffffff" }} />
             </button>
-            {isLoggedIn && (
-              <button
-                onClick={() => goOrAuth("/account")}
-                className="flex items-center justify-center shrink-0 transition-transform duration-150 w-[30px] h-[30px] md:w-[33px] md:h-[33px]"
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "#000000",
-                  border: `2px solid ${subscribed ? "hsl(var(--neon-green))" : "#ffe603"}`,
-                  transform: "translateX(0px)",
-                }}
-                aria-label="my account"
-              >
-                <User size={15} strokeWidth={3.5} className="md:!w-[18px] md:!h-[18px]" style={{ color: "#ffffff" }} />
-              </button>
-            )}
-          </div>
+          )}
 
           {!isAuthPage && isLoggedIn && (
-            <div className="flex items-center gap-[14px] md:gap-[16px]" style={{ marginLeft: "5px" }}>
-
+            <div className="flex items-center gap-[14px] md:gap-[16px]">
+              <button
+                onClick={() => goOrAuth("/account")}
+                className="flex items-center justify-center"
+                style={{ backgroundColor: "transparent", border: "none", padding: 0 }}
+                aria-label="settings"
+              >
+                <Settings size={28} strokeWidth={3} className="md:!w-[31px] md:!h-[31px]" style={{ color: "#ffffff" }} />
+              </button>
 
               <button
                 onClick={() => goOrAuth("/top-ups")}
@@ -73,15 +78,6 @@ const Header = () => {
               >
                 <Gem size={12} strokeWidth={3} className="md:!w-[15px] md:!h-[15px]" style={{ color: "#00e0ff" }} />
                 <span className="text-[12px] md:text-[15px] font-[900] lowercase text-white leading-none">{gems}</span>
-              </button>
-
-              <button
-                onClick={() => goOrAuth("/account")}
-                className="flex items-center justify-center"
-                style={{ backgroundColor: "transparent", border: "none", padding: 0, marginLeft: "-2px" }}
-                aria-label="settings"
-              >
-                <Settings size={28} strokeWidth={3} className="md:!w-[31px] md:!h-[31px]" style={{ color: "#ffffff" }} />
               </button>
             </div>
           )}
