@@ -23,8 +23,6 @@ interface StorageImage {
   characterName?: string;
 }
 
-let storageHasLoadedOnce = typeof window !== "undefined" && !!(window as any).__facefox_storage_preloaded;
-
 const Storage = () => {
   const { user, loading: authLoading } = useAuth();
   const { generations, characters: cachedChars, generationsReady } = useAppData();
@@ -35,7 +33,7 @@ const Storage = () => {
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
   const [hidden, setHidden] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    try { return localStorage.getItem("facefox_storage_hidden") !== "0"; } catch { return true; }
+    try { return localStorage.getItem("facefox_storage_hidden") === "1"; } catch { return false; }
   });
   const toggleHidden = () => {
     setHidden((prev) => {
@@ -106,18 +104,11 @@ const Storage = () => {
     if (loadedStorageCountRef.current >= expectedStorageImageCount && unblockStorageRef.current) {
       unblockStorageRef.current();
       unblockStorageRef.current = null;
-      storageHasLoadedOnce = true;
     }
   }, [expectedStorageImageCount]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).__facefox_storage_preloaded) {
-      storageHasLoadedOnce = true;
-    }
-    if (storageHasLoadedOnce) {
-      if (unblockStorageRef.current) { unblockStorageRef.current(); unblockStorageRef.current = null; }
-      return;
-    }
+    loadedStorageCountRef.current = 0;
     if (!generationsReady) {
       if (!unblockStorageRef.current) {
         unblockStorageRef.current = registerBlockingLoader();
@@ -126,7 +117,6 @@ const Storage = () => {
     }
     if (expectedStorageImageCount === 0) {
       if (unblockStorageRef.current) { unblockStorageRef.current(); unblockStorageRef.current = null; }
-      storageHasLoadedOnce = true;
       return;
     }
     if (!unblockStorageRef.current) {
@@ -136,12 +126,10 @@ const Storage = () => {
       const imgs = document.querySelectorAll('img[data-storage-image="1"]');
       if (imgs.length >= expectedStorageImageCount && Array.from(imgs).every(img => (img as HTMLImageElement).complete && (img as HTMLImageElement).naturalHeight > 0)) {
         if (unblockStorageRef.current) { unblockStorageRef.current(); unblockStorageRef.current = null; }
-        storageHasLoadedOnce = true;
       }
     });
     const timer = setTimeout(() => {
       if (unblockStorageRef.current) { unblockStorageRef.current(); unblockStorageRef.current = null; }
-      storageHasLoadedOnce = true;
     }, 8000);
     return () => { clearTimeout(timer); if (unblockStorageRef.current) { unblockStorageRef.current(); unblockStorageRef.current = null; } };
   }, [expectedStorageImageCount, generationsReady]);
