@@ -40,10 +40,10 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden" style={{ overscrollBehavior: "contain" }}>
-      <main className="relative z-[1] w-full max-w-lg md:max-w-2xl mx-auto px-[24px] md:px-[48px] pt-[44px] pb-[40px]">
+    <div className="relative h-[100dvh] overflow-hidden" style={{ overscrollBehavior: "contain" }}>
+      <main className="relative z-[1] w-full max-w-lg md:max-w-2xl mx-auto px-[24px] md:px-[48px] pt-[24px] pb-[16px]">
         <div className="w-full md:max-w-md">
-          <div className="flex items-center gap-[14px] mb-12">
+          <div className="flex items-center gap-[14px] mb-6">
             <BackButton always />
             <PageTitle className="mb-0">reset password</PageTitle>
           </div>
