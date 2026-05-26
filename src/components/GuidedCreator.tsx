@@ -124,7 +124,7 @@ const InteractivePill = ({ label, selected, shaking, onClick }: {
           ? { x: [0, -6, 6, -4, 4, 0], transition: { duration: 0.25 } }
           : {}
     }
-    className="inline-flex items-center justify-center h-[51px] md:h-[60px] text-[15px] md:text-[18px] w-[121px] md:w-[145px]"
+    className="inline-flex items-center justify-center h-[46px] md:h-[54px] text-[14px] md:text-[16px] w-[110px] md:w-[132px]"
     style={{
       borderRadius: 8,
       padding: 0,
@@ -779,7 +779,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
           <h2 className={SLIDE_TITLE_CLASS}>{trait.label}</h2>
             <div ref={contentSlotRef} className="w-full" style={{ marginTop: SLIDE_CONTENT_GAP, height: contentHeight }}>
               <div ref={contentInnerRef} style={{ transform: `scale(${contentScale})`, transformOrigin: "top center" }}>
-                <div className="flex flex-wrap justify-center gap-3 md:gap-3.5 px-2 mx-auto max-w-[31rem] md:max-w-[31rem]">
+                <div className="flex flex-wrap justify-center gap-3 md:gap-3.5 px-2 mx-auto max-w-[28rem] md:max-w-[28rem]">
                   {trait.options.map((opt) => (
                     <InteractivePill
                       key={opt}
