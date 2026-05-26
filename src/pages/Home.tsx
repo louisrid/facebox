@@ -144,8 +144,8 @@ const Home = () => {
       return;
     }
 
-    // No user → show the dashboard signed-out view
-    setShowGuided(false);
+    // No user → show the dashboard signed-out view (unless creator was explicitly requested)
+    if (!openCreatorRequested) setShowGuided(false);
     setSkipWelcome(true);
     setAutoOpenEvaluated(true);
   }, [authLoading, openCreatorRequested, user, navigate, lockStateResolved, charsLoaded, resolvedCharacterCount]);

@@ -49,7 +49,7 @@ const getRandomNameToast = () => "great choice!";
 
 const TRAITS = [
   { key: "skin", label: "choose skin tone", emoji: "🎨", options: ["asian", "black", "tan", "white"] },
-  { key: "bodyType", label: "choose body type", emoji: "⌛", options: ["slim", "regular", "curvy"], defaultOption: "regular" },
+  { key: "bodyType", label: "choose body type", emoji: "⌛", options: ["regular", "curvy"], defaultOption: "regular" },
   { key: "bustSize", label: "choose size", emoji: "👙", options: ["regular", "extra large"], defaultOption: "regular" },
   { key: "age", label: "choose her age", emoji: "🎂", options: ["18-24", "24+"] },
   { key: "hairColour", label: "choose hair colour", emoji: "🖌️", options: ["ginger", "black", "pink", "brown", "blonde"] },
@@ -124,7 +124,7 @@ const InteractivePill = ({ label, selected, shaking, onClick }: {
           ? { x: [0, -6, 6, -4, 4, 0], transition: { duration: 0.25 } }
           : {}
     }
-    className="inline-flex items-center justify-center h-[46px] md:h-[54px] text-[14px] md:text-[16px] w-[110px] md:w-[132px]"
+    className="inline-flex items-center justify-center h-[51px] md:h-[60px] text-[15px] md:text-[18px] w-[121px] md:w-[145px]"
     style={{
       borderRadius: 8,
       padding: 0,
@@ -779,7 +779,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
           <h2 className={SLIDE_TITLE_CLASS}>{trait.label}</h2>
             <div ref={contentSlotRef} className="w-full" style={{ marginTop: SLIDE_CONTENT_GAP, height: contentHeight }}>
               <div ref={contentInnerRef} style={{ transform: `scale(${contentScale})`, transformOrigin: "top center" }}>
-                <div className="flex flex-wrap justify-center gap-3 md:gap-3.5 px-2 mx-auto max-w-[28rem] md:max-w-[28rem]">
+                <div className="flex flex-wrap justify-center gap-3 md:gap-3.5 px-2 mx-auto max-w-[31rem] md:max-w-[31rem]">
                   {trait.options.map((opt) => (
                     <InteractivePill
                       key={opt}
@@ -1073,11 +1073,11 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
   if (!visible) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex flex-col overflow-y-auto" style={{ backgroundColor: "#000000" }}>
-      <div className="shrink-0" style={{ paddingTop: 23 }}>
-        <div className="mx-auto flex h-[63px] w-full max-w-lg items-center justify-center px-[28px] md:h-[80px] md:max-w-3xl md:px-[44px]">
+    <div className="fixed inset-0 z-[9999] flex flex-col" style={{ backgroundColor: "#000000" }}>
+      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
+        <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
           <span
-            className="text-[20px] md:text-[27px] text-white tracking-[-0.5px] leading-none lowercase"
+            className="text-[22px] md:text-[28px] text-white tracking-[-0.5px] leading-none lowercase"
             style={{ fontWeight: 900 }}
           >
             facebox
@@ -1085,12 +1085,13 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
         </div>
       </div>
       <motion.div
-        className="flex-1 flex flex-col items-center px-6 md:px-12 pt-[34px]"
+        className="flex-1 flex flex-col items-center justify-center px-6 md:px-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.15, ease: "easeInOut" }}
       >
         <div className="w-full max-w-md mx-auto flex flex-col items-center">
+          <h2 className={`${SLIDE_TITLE_CLASS} mb-6 md:mb-8`}>sign up to create</h2>
           <div className="w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             <button
               onClick={handleGoogle}
@@ -1136,11 +1137,14 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
               {emailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
             </button>
           </div>
-          <div className="flex items-center justify-center mt-6 md:mt-8" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 24px)" }}>
-            <NavArrow direction="left" onClick={handleBack} />
-          </div>
         </div>
       </motion.div>
+      <div className="flex flex-col items-center" style={{ flexShrink: 0, paddingBottom: "max(env(safe-area-inset-bottom, 0px), 2%)" }}>
+        <div className="flex items-center justify-center gap-4 md:gap-6">
+          <NavArrow direction="left" onClick={handleBack} />
+        </div>
+        <div style={{ height: 24, pointerEvents: "none" }} />
+      </div>
     </div>,
     document.body,
   );
