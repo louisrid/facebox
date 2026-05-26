@@ -307,7 +307,8 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
           setHandoffLoading(false);
           sessionStorage.removeItem("facefox_signup_gate_active");
           sessionStorage.removeItem("facefox_post_auth_home");
-          localStorage.removeItem("facefox_pending_creation");
+          sessionStorage.removeItem("facefox_resume_url");
+          sessionStorage.removeItem("facefox_signup_only");
           window.location.href = "/auth";
           return;
         }
@@ -567,7 +568,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   // Delay arrow fade-in by 450ms so arrows enter in sync with the incoming slide,
   // not overlapping the outgoing no-arrow slide (hero or signup) as it fades out.
   // Arrow fade-OUT remains instant to run in parallel with the current slide exit.
-  const showNavigation = !isHeroSlide && !isSignupScreen;
+  const showNavigation = !isHeroSlide;
   const [showNavigationDelayed, setShowNavigationDelayed] = useState(showNavigation);
   const prevVisibleForNavRef = useRef(visible);
   const prevStepTypeForNavRef = useRef(stepType);
@@ -1118,7 +1119,9 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
               <motion.div animate={backArrowShaking ? { x: [0, -6, 6, -4, 4, 0] } : {}} transition={{ duration: 0.4 }}>
                 <NavArrow direction="left" onClick={goBack} />
               </motion.div>
-              <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
+              {!isSignupScreen && (
+                <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
