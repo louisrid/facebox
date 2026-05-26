@@ -1295,15 +1295,6 @@ export const SignInOverlay = ({ open, onSignedIn }: { open: boolean; onSignedIn:
             >
               {emailLoading ? <><Loader2 className="animate-spin" size={18} />{isSignUp ? "signing up..." : "logging in..."}</> : <>{isSignUp ? "sign up" : "log in"}<ArrowRight size={14} /></>}
             </button>
-
-            <button
-              type="button"
-              onClick={() => setIsSignUp((v) => !v)}
-              className="w-full text-center text-[11px] font-extrabold lowercase text-white hover:opacity-80 transition-colors duration-150"
-            >
-              {isSignUp ? "already have an account? " : "no account? "}
-              <span className="underline">{isSignUp ? "log in" : "sign up"}</span>
-            </button>
           </div>
 
         </div>
