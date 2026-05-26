@@ -358,6 +358,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   const isSet1Slide1 = stepType === "set1slide1";
   const isNameSlide = stepType === "name";
   const isCreateSlide = stepType === "create";
+  const isSignupSlide = stepType === "signup";
 
   // Tracks the slide type currently VISIBLE on screen. Updates after the exit animation
   // completes (450ms), so wrapper alignment stays in sync with the outgoing slide
