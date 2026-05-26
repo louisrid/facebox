@@ -944,6 +944,62 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     }
 
 
+    /* Signup slide — inline form rendered as a real step in the creator flow */
+    if (isSignupSlide) {
+      return (
+        <div className="flex w-full flex-col items-center">
+          <h2 className="text-center text-[28px] md:text-[44px] font-[900] lowercase leading-[1.05] tracking-tight text-white mb-6 md:mb-8 whitespace-nowrap">sign up to <span style={{ color: "#00e0ff" }}>create</span> 🖌️</h2>
+          <div className="w-full max-w-md rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSignupGoogle(); }}
+              disabled={signupGoogleLoading || signupEmailLoading}
+              className="w-full h-14 flex items-center justify-center gap-2 disabled:opacity-50 transition-transform duration-150"
+              style={{ background: Y, color: "#000000", borderRadius: 8, fontSize: 14, fontWeight: 900, textTransform: "lowercase", border: "none" }}
+            >
+              {signupGoogleLoading ? <><Loader2 className="animate-spin" size={18} />connecting...</> : (
+                <>
+                  <GoogleIcon />
+                  sign up with google
+                </>
+              )}
+            </button>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
+              <span className="text-[11px] font-extrabold lowercase text-white">or use email</span>
+              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
+            </div>
+            <input
+              type="email" placeholder="email" value={signupEmail}
+              onChange={(e) => setSignupEmail(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full h-12 px-4 text-base font-extrabold lowercase text-white placeholder:text-white/30 outline-none transition-colors duration-150 focus:border-neon-yellow"
+              style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))" }}
+              disabled={signupEmailLoading || signupGoogleLoading}
+            />
+            <input
+              type="password" placeholder="password" value={signupPassword}
+              onChange={(e) => setSignupPassword(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSignupEmail(); }}
+              className="w-full h-12 px-4 text-base font-extrabold lowercase text-white placeholder:text-white/30 outline-none transition-colors duration-150 focus:border-neon-yellow"
+              style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))" }}
+              disabled={signupEmailLoading || signupGoogleLoading}
+            />
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSignupEmail(); }}
+              disabled={signupEmailLoading || signupGoogleLoading}
+              className="w-full h-14 text-sm font-[900] lowercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 hover:opacity-90"
+              style={{ borderRadius: 8, background: '#ffe603', color: '#000000' }}
+            >
+              {signupEmailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return null;
   };
 
