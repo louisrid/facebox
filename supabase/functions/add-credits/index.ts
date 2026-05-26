@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const IS_DEMO_MODE = (Deno.env.get("IS_DEMO_MODE") ?? "true") === "true";
+const IS_DEMO_MODE = Deno.env.get("IS_DEMO_MODE") === "true";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
