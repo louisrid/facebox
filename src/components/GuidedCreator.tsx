@@ -551,7 +551,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     }
 
     setStep(nextStep);
-  }, [step, isNameSlide, isCreateSlide, isHeroSlide, isSet1Slide1, currentTraitIndex, TOTAL, completeCookingFlow, flowVariant]);
+  }, [step, isNameSlide, isCreateSlide, isSignupSlide, isLoggedIn, isHeroSlide, isSet1Slide1, currentTraitIndex, TOTAL, completeCookingFlow, flowVariant]);
 
   const goBack = useCallback(() => {
     toast.dismiss();
