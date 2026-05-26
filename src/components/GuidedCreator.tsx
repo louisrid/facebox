@@ -527,7 +527,14 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
       if (!selectionsRef.current[key as keyof GuidedSelections]) { triggerShake(); return; }
     }
     if (isCreateSlide) {
+      if (!isLoggedIn) {
+        setStep(step + 1);
+        return;
+      }
       completeCookingFlow();
+      return;
+    }
+    if (isSignupSlide) {
       return;
     }
 
