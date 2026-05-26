@@ -183,8 +183,8 @@ const Auth = () => {
           <PageTitle className="mb-0">log in</PageTitle>
         </div>
         <div className="w-full md:max-w-md md:mx-auto">
-
           <div className="rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
+
             {!inWebView && (
               <>
                 <button

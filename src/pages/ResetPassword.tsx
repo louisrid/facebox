@@ -64,7 +64,6 @@ const ResetPassword = () => {
           <PageTitle className="mb-0">reset password</PageTitle>
         </div>
         <div className="w-full md:max-w-md md:mx-auto">
-
           {success ? (
             <div className="border-[2px] border-[hsl(var(--border-mid))] rounded-[8px] p-6 md:p-8 text-center">
               <p className="text-xs md:text-sm font-extrabold lowercase mb-1 text-foreground">password updated</p>

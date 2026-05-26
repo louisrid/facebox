@@ -170,8 +170,7 @@ type FlowStep =
   | { type: "set1slide1" }
   | { type: "name" }
   | { type: "trait"; traitIndex: number }
-  | { type: "create" }
-  | { type: "signup" };
+  | { type: "create" };
 
 type FlowVariant = "guest-onboarding" | "member-onboarding" | "returning-full" | "returning-skip";
 
@@ -190,216 +189,6 @@ const normaliseLegacySelections = (partial: Partial<GuidedSelections>): Partial<
   skin: partial.skin === "pale" ? "white" : partial.skin === "dark" ? "black" : partial.skin,
 });
 
-/* ══════════════════════════════════════════
-   SIGNUP GATE (first-time, not logged in)
-   ══════════════════════════════════════════ */
-const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
-  const { user, signIn, signUp } = useAuth();
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [emailLoading, setEmailLoading] = useState(false);
-  const [handoffLoading, setHandoffLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    const resetLoading = () => setGoogleLoading(false);
-    const onVisibility = () => {
-      if (document.visibilityState === "visible") setGoogleLoading(false);
-    };
-    window.addEventListener("pageshow", resetLoading);
-    window.addEventListener("focus", resetLoading);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      window.removeEventListener("pageshow", resetLoading);
-      window.removeEventListener("focus", resetLoading);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
-
-  const persistSignupHandoff = useCallback(() => {
-    sessionStorage.setItem(FLOW_STATE_KEY, JSON.stringify({ selections }));
-    sessionStorage.setItem("facefox_signup_gate_active", "1");
-    sessionStorage.setItem("facefox_post_auth_home", "1");
-    localStorage.setItem("facefox_pending_creation", JSON.stringify(selections));
-  }, [selections]);
-
-  const navigateToChoose = useTransitionNavigate();
-  const navigatedRef = useRef(false);
-  useEffect(() => {
-    if (!user || navigatedRef.current) return;
-    navigatedRef.current = true;
-    setHandoffLoading(true);
-    const draft = {
-      characterName: selections.characterName,
-      skin: selections.skin || "tan",
-      bodyType: selections.bodyType || "regular",
-      bustSize: selections.bustSize || "regular",
-      hairStyle: selections.hairStyle || "long straight",
-      hairColour: selections.hairColour || "brunette",
-      eye: selections.eye || "brown",
-      age: selections.age === "18-24" ? "18" : selections.age === "24+" ? "24" : selections.age || "18",
-      description: selections.description || "",
-    };
-    sessionStorage.setItem("facefox_character_draft", JSON.stringify(draft));
-    localStorage.setItem("facefox_draft_backup", JSON.stringify(draft));
-    const prompt = `${draft.age} year old woman, ${draft.skin} skin, ${draft.hairStyle} ${draft.hairColour} hair, ${draft.eye} eyes`;
-    sessionStorage.setItem("facefox_guided_prompt", prompt);
-    sessionStorage.removeItem("facefox_face_options");
-    sessionStorage.removeItem("facefox_pending_char_id");
-    sessionStorage.removeItem(FLOW_STATE_KEY);
-    sessionStorage.removeItem("facefox_post_auth_home");
-    sessionStorage.removeItem("facefox_signup_gate_active");
-    sessionStorage.setItem("facefox_creator_dismissed", "1");
-    localStorage.removeItem("facefox_pending_creation");
-    navigateToChoose("/choose-face", { state: { prompt, freshCreation: true } });
-  }, [user, selections, navigateToChoose]);
-
-  const handleGoogle = async () => {
-    const _blackout = document.createElement('div');
-    _blackout.style.cssText = 'position:fixed;inset:0;background:#000;z-index:2147483645';
-    document.body.appendChild(_blackout);
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(undefined))));
-    setGoogleLoading(true);
-    persistSignupHandoff();
-    sessionStorage.setItem("facefox_resume_url", window.location.pathname);
-    sessionStorage.setItem("facefox_signup_only", "1");
-    localStorage.setItem("facefox_pending_creation", JSON.stringify(selections));
-    try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-        extraParams: { prompt: "select_account" },
-      });
-      if (result?.error) {
-        sessionStorage.removeItem("facefox_post_auth_home");
-        sessionStorage.removeItem("facefox_signup_gate_active");
-        toast.error("log in error");
-        setGoogleLoading(false);
-      }
-    } catch {
-      sessionStorage.removeItem("facefox_post_auth_home");
-      sessionStorage.removeItem("facefox_signup_gate_active");
-      toast.error("log in error");
-      setGoogleLoading(false);
-    }
-  };
-
-  const handleEmailAuth = async () => {
-    if (!email.trim() || !password.trim()) { toast.error("fill details"); return; }
-    if (password.length < 5) { toast.error("min. 5 chars"); return; }
-    setEmailLoading(true);
-    setHandoffLoading(true);
-    persistSignupHandoff();
-    try {
-      try {
-        await signUp(email.trim(), password);
-        window.setTimeout(() => {
-          if (!user) {
-            setEmailLoading(false);
-            setHandoffLoading(false);
-            toast.success("check email");
-          }
-        }, 1500);
-      }
-      catch (err: any) {
-        if (err.message?.toLowerCase().includes("already registered")) {
-          toast.error("you already have an account, log in");
-          setEmailLoading(false);
-          setHandoffLoading(false);
-          sessionStorage.removeItem("facefox_signup_gate_active");
-          sessionStorage.removeItem("facefox_post_auth_home");
-          sessionStorage.removeItem("facefox_resume_url");
-          sessionStorage.removeItem("facefox_signup_only");
-          window.location.href = "/auth";
-          return;
-        }
-        else throw err;
-      }
-    } catch {
-      toast.error("try again");
-      setEmailLoading(false);
-      setHandoffLoading(false);
-      sessionStorage.removeItem("facefox_signup_gate_active");
-      sessionStorage.removeItem("facefox_post_auth_home");
-    }
-  };
-
-  if (handoffLoading) {
-    return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4">
-        <h2 className="text-2xl font-[900] lowercase tracking-tight text-foreground">loading...</h2>
-        <div className="relative overflow-hidden" style={{ width: "14rem", height: 8, borderRadius: 2, background: "hsl(var(--card))" }}>
-          <div style={{ width: "40%", height: "100%", background: "#ffe603", borderRadius: 2, animation: "facefox-bar 1.6s ease-in-out infinite", position: "absolute" }} />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex w-full flex-col items-center">
-      <div className="flex flex-col items-center px-8 w-full max-w-md">
-        <span
-          className="text-[44px] md:text-[60px] mb-3 md:mb-4 inline-block"
-          style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
-        >
-          🔐
-        </span>
-        <h2 className="text-center text-[28px] md:text-[40px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
-           sign up<br/>to save her
-        </h2>
-
-        <div className="mt-8 w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
-          <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleGoogle(); }}
-            disabled={googleLoading}
-            className="w-full h-14 flex items-center justify-center gap-2 disabled:opacity-50 transition-transform duration-150"
-            style={{ background: Y, color: "#000000", borderRadius: 8, fontSize: 14, fontWeight: 900, textTransform: "lowercase", border: "none" }}
-          >
-            {googleLoading ? <><Loader2 className="animate-spin" size={18} />connecting...</> : (
-              <>
-                <GoogleIcon />
-                sign up with google
-              </>
-            )}
-          </button>
-
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
-            <span className="text-[11px] font-extrabold lowercase text-white">or use email</span>
-            <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
-          </div>
-
-          <input
-            type="email" placeholder="email" value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            className="w-full h-12 px-4 text-base font-extrabold lowercase text-white placeholder:text-white/30 outline-none transition-colors duration-150 focus:border-neon-yellow"
-            style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))", scrollMarginTop: "120px" }}
-            disabled={googleLoading}
-          />
-          <input
-            type="password" placeholder="password" value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => { if (e.key === "Enter") handleEmailAuth(); }}
-            className="w-full h-12 px-4 text-base font-extrabold lowercase text-white placeholder:text-white/30 outline-none transition-colors duration-150 focus:border-neon-yellow"
-            style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))", scrollMarginTop: "120px" }}
-            disabled={googleLoading}
-          />
-
-          <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleEmailAuth(); }}
-            disabled={emailLoading}
-            className="w-full h-14 text-sm font-[900] lowercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 hover:opacity-90"
-            style={{ borderRadius: 8, background: '#ffe603', color: '#000000' }}
-          >
-            {emailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
-          </button>
-
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, onComplete, onExit, skipWelcome = false }, _ref) => {
@@ -427,7 +216,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
 
     switch (flowVariant) {
       case "guest-onboarding":
-        return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "signup" }, { type: "create" }];
+        return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
       case "member-onboarding":
         return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
       case "returning-skip":
@@ -538,7 +327,6 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   const isSet1Slide1 = stepType === "set1slide1";
   const isNameSlide = stepType === "name";
   const isCreateSlide = stepType === "create";
-  const isSignupScreen = stepType === "signup";
 
   // Tracks the slide type currently VISIBLE on screen. Updates after the exit animation
   // completes (450ms), so wrapper alignment stays in sync with the outgoing slide
@@ -762,9 +550,6 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
 
   const canAdvance = isHeroSlide || isNameSlide || isCreateSlide || isSet1Slide1 || (currentTraitIndex >= 0 && isCurrentTraitSelected());
 
-  // When user signs up/logs in on the signup screen, the SignupGate component
-  // handles persisting selections and setting the flag. Home.tsx will read it
-  // and navigate to choose-face. No need for an effect here.
 
   // Keep mounted during fade-out, unmount after transition
   const [shouldRender, setShouldRender] = useState(visible);
@@ -1008,10 +793,6 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
       );
     }
 
-    /* Signup gate (first-time, not logged in) */
-    if (isSignupScreen) {
-      return <SignupGate selections={selections} />;
-    }
 
     return null;
   };
@@ -1062,8 +843,8 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
       {/* Content area — fades between slides, anchored to fixed top so emoji+title stay consistent */}
       <div className="flex-1 flex justify-center px-6 md:px-12 min-h-0 overflow-hidden">
         <div
-          className={`mx-auto flex w-full flex-col ${visualStepType === "signup" ? "max-w-md md:max-w-lg" : "max-w-sm md:max-w-lg"} ${visualStepType === "hero" || visualStepType === "signup" ? "items-center justify-center" : "items-center justify-center"}`}
-          style={visualStepType === "hero" || visualStepType === "signup" ? undefined : { paddingTop: 0, paddingBottom: 0 }}
+          className={`mx-auto flex w-full flex-col max-w-sm md:max-w-lg ${visualStepType === "hero" ? "items-center justify-center" : "items-center justify-center"}`}
+          style={visualStepType === "hero" ? undefined : { paddingTop: 0, paddingBottom: 0 }}
         >
           {isHeroSlide ? (
             <div className="w-full">{renderSlide()}</div>
@@ -1119,9 +900,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
               <motion.div animate={backArrowShaking ? { x: [0, -6, 6, -4, 4, 0] } : {}} transition={{ duration: 0.4 }}>
                 <NavArrow direction="left" onClick={goBack} />
               </motion.div>
-              {!isSignupScreen && (
-                <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
-              )}
+              <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
             </motion.div>
           )}
         </AnimatePresence>

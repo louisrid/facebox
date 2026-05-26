@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import foxEmojiImg from "@/assets/fox-emoji.png";
+
 
 /* ── Types ── */
 export interface SlideConfig {
@@ -43,21 +43,12 @@ const BouncingEmoji = ({ emoji }: { emoji: string }) => (
     className="flex items-center justify-center"
     style={{ height: EMOJI_SLOT_HEIGHT, marginTop: EMOJI_MARGIN_TOP, marginBottom: EMOJI_MARGIN_BOTTOM }}
   >
-    {false ? (
-      <img
-        src={foxEmojiImg}
-        alt="🦊"
-        className="inline-block"
-        style={{ width: 60, height: 60, objectFit: "contain", animation: "emoji-bounce 1.6s ease-in-out infinite" }}
-      />
-    ) : (
-      <span
-        className="text-[60px] md:text-[78px] inline-block leading-none"
-        style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
-      >
-        {emoji}
-      </span>
-    )}
+    <span
+      className="text-[60px] md:text-[78px] inline-block leading-none"
+      style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
+    >
+      {emoji}
+    </span>
   </div>
 );
 
