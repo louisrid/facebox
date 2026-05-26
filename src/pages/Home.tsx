@@ -55,8 +55,9 @@ const Home = () => {
   const location = useLocation();
   const { user, loading: authLoading } = useAuth();
   const { characters: cachedChars, generations: cachedGens, charactersReady: cachedCharsLoaded, generationsReady } = useAppData();
-  const locationState = ((location.state as { openCreator?: boolean; onboardingRedirect?: boolean } | null) ?? null);
+  const locationState = ((location.state as { openCreator?: boolean; onboardingRedirect?: boolean; resumeAtCreate?: boolean } | null) ?? null);
   const openCreatorRequested = Boolean(locationState?.openCreator);
+  const resumeAtCreate = Boolean(locationState?.resumeAtCreate);
   const shouldOpenGuidedOnMount = openCreatorRequested;
   useEffect(() => {
     if (openCreatorRequested) {
@@ -315,12 +316,13 @@ const Home = () => {
   const pageHidden = showGuided || (!autoOpenEvaluated && !user && !hasCachedUser);
 
   return (
-    <div className="relative min-h-[calc(100dvh-57px)] overflow-hidden">
+    <div className="relative min-h-[calc(100dvh-90px)] overflow-hidden">
       <GuidedCreator
         open={showGuided}
         onComplete={handleGuidedComplete}
         onExit={handleGuidedExit}
         skipWelcome={skipWelcome}
+        resumeAtCreate={resumeAtCreate}
       />
       {!pageHidden && <div className="relative flex h-full flex-col">
 
