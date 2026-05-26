@@ -832,6 +832,30 @@ serve(async (req) => {
     const selectedFaceUrl = body?.selected_face_url || null;
     const angleCharacterId = body?.angle_character_id || null;
     const vibeReferenceUrl = body?.vibe_reference_url || null;
+
+    // SSRF guard: only allow URLs from our own Supabase storage to be forwarded
+    // to third-party image APIs (xAI). Reject any user-supplied external URL.
+    const SUPABASE_PROJECT_URL = Deno.env.get("SUPABASE_URL") ?? "";
+    const ALLOWED_IMAGE_PREFIXES = [
+      `${SUPABASE_PROJECT_URL}/storage/v1/object/public/images/`,
+      `${SUPABASE_PROJECT_URL}/storage/v1/object/sign/images/`,
+    ];
+    const isAllowedImageUrl = (value: unknown): boolean => {
+      if (typeof value !== "string" || value.length === 0) return false;
+      return ALLOWED_IMAGE_PREFIXES.some((prefix) => prefix.length > 0 && value.startsWith(prefix));
+    };
+    if (selectedFaceUrl && !isAllowedImageUrl(selectedFaceUrl)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid face URL" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    if (vibeReferenceUrl && !isAllowedImageUrl(vibeReferenceUrl)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid reference URL" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     const regenerateTarget = body?.regenerate_target || "both";
     const regenerateSingle = body?.regenerate_single || null;
     const previousFaces = Array.isArray(body?.previous_faces)
