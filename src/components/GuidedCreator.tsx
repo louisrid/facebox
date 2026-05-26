@@ -193,7 +193,7 @@ const normaliseLegacySelections = (partial: Partial<GuidedSelections>): Partial<
 
 
 const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, onComplete, onExit, skipWelcome = false, resumeAtCreate = false }, _ref) => {
-  const { user } = useAuth();
+  const { user, signUp } = useAuth();
   const navigateTo = useTransitionNavigate();
   const isLoggedIn = !!user;
 
