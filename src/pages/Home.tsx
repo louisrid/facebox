@@ -322,6 +322,7 @@ const Home = () => {
         onComplete={handleGuidedComplete}
         onExit={handleGuidedExit}
         skipWelcome={skipWelcome}
+        resumeAtCreate={resumeAtCreate}
       />
       {!pageHidden && <div className="relative flex h-full flex-col">
 
