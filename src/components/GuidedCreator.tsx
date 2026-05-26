@@ -171,7 +171,8 @@ type FlowStep =
   | { type: "set1slide1" }
   | { type: "name" }
   | { type: "trait"; traitIndex: number }
-  | { type: "create" };
+  | { type: "create" }
+  | { type: "signup" };
 
 type FlowVariant = "guest-onboarding" | "member-onboarding" | "returning-full" | "returning-skip";
 
