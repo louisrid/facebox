@@ -28,6 +28,19 @@ serve(async (req) => {
     });
   }
 
+  // Defense-in-depth: even if ALLOW_TEST_ACCOUNTS is accidentally enabled,
+  // require a shared secret so unauthenticated callers can't mass-provision.
+  const expectedSecret = Deno.env.get("PROVISION_SECRET");
+  if (expectedSecret) {
+    const providedSecret = req.headers.get("x-provision-secret") ?? "";
+    if (providedSecret !== expectedSecret) {
+      return new Response(JSON.stringify({ error: "forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+  }
+
   try {
     const { email = `preview-default${PREVIEW_EMAIL_DOMAIN}`, password = DEFAULT_PASSWORD } = await req.json().catch(() => ({}));
     const normalisedEmail = normaliseEmail(email);
