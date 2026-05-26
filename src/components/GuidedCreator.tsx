@@ -307,7 +307,8 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
           setHandoffLoading(false);
           sessionStorage.removeItem("facefox_signup_gate_active");
           sessionStorage.removeItem("facefox_post_auth_home");
-          localStorage.removeItem("facefox_pending_creation");
+          sessionStorage.removeItem("facefox_resume_url");
+          sessionStorage.removeItem("facefox_signup_only");
           window.location.href = "/auth";
           return;
         }
