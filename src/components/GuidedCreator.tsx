@@ -1141,7 +1141,7 @@ GuidedCreator.displayName = "GuidedCreator";
    shown on /choose-face when the user is not logged in.
    ══════════════════════════════════════════ */
 export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: () => void }) => {
-  const { user, signIn, signUp } = useAuth();
+  const { user, signUp } = useAuth();
   const [googleLoading, setGoogleLoading] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -1162,7 +1162,6 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
   }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     if (open && !user) setVisible(true);
@@ -1183,16 +1182,22 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
     };
   }, [visible]);
 
+  const persistPendingCreation = () => {
+    const draftBackup = localStorage.getItem("facefox_draft_backup");
+    if (draftBackup) {
+      localStorage.setItem("facefox_pending_creation", draftBackup);
+    }
+  };
+
   const handleGoogle = async () => {
     const _blackout = document.createElement('div');
     _blackout.style.cssText = 'position:fixed;inset:0;background:#000;z-index:2147483645';
     document.body.appendChild(_blackout);
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(undefined))));
     setGoogleLoading(true);
-    sessionStorage.setItem("facefox_post_auth_home", "1");
+    persistPendingCreation();
     sessionStorage.setItem("facefox_signup_gate_active", "1");
     sessionStorage.setItem("facefox_post_auth_home", "1");
-    sessionStorage.setItem("facefox_resume_url", window.location.pathname);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
@@ -1201,13 +1206,13 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
       if (result?.error) {
         sessionStorage.removeItem("facefox_post_auth_home");
         sessionStorage.removeItem("facefox_signup_gate_active");
-        toast.error("log in error");
+        toast.error("sign up error");
         setGoogleLoading(false);
       }
     } catch {
       sessionStorage.removeItem("facefox_post_auth_home");
       sessionStorage.removeItem("facefox_signup_gate_active");
-      toast.error("log in error");
+      toast.error("sign up error");
       setGoogleLoading(false);
     }
   };
@@ -1216,41 +1221,67 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
     if (!email.trim() || !password.trim()) { toast.error("fill details"); return; }
     if (password.length < 5) { toast.error("min. 5 chars"); return; }
     setEmailLoading(true);
+    persistPendingCreation();
+    sessionStorage.setItem("facefox_signup_gate_active", "1");
+    sessionStorage.setItem("facefox_post_auth_home", "1");
     try {
-      if (isSignUp) {
-        try { await signUp(email.trim(), password); toast.success("check email"); }
-        catch (err: any) {
-          if (err.message?.toLowerCase().includes("already registered")) {
-            toast.error("press login instead!");
-            setIsSignUp(false);
+      try {
+        await signUp(email.trim(), password);
+        window.setTimeout(() => {
+          if (!user) {
             setEmailLoading(false);
-            return;
+            toast.success("check email");
           }
-          else throw err;
+        }, 1500);
+      }
+      catch (err: any) {
+        if (err.message?.toLowerCase().includes("already registered")) {
+          toast.error("you already have an account, log in");
+          setEmailLoading(false);
+          sessionStorage.removeItem("facefox_signup_gate_active");
+          sessionStorage.removeItem("facefox_post_auth_home");
+          window.location.href = "/auth";
+          return;
         }
-      } else { await signIn(email.trim(), password); }
-    } catch (err: any) { toast.error("try again"); setEmailLoading(false); }
+        else throw err;
+      }
+    } catch {
+      toast.error("try again");
+      setEmailLoading(false);
+      sessionStorage.removeItem("facefox_signup_gate_active");
+      sessionStorage.removeItem("facefox_post_auth_home");
+    }
   };
 
   if (!visible) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999]" style={{ backgroundColor: "#000000" }}>
+    <div className="fixed inset-0 z-[9999] flex flex-col" style={{ backgroundColor: "#000000" }}>
+      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
+        <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
+          <span
+            className="text-[22px] md:text-[28px] text-white tracking-[-0.5px] leading-none lowercase"
+            style={{ fontWeight: 900 }}
+          >
+            facebox
+          </span>
+        </div>
+      </div>
       <motion.div
-        className="absolute inset-0 flex flex-col items-center pt-[22vh]"
+        className="flex-1 flex flex-col items-center justify-center px-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.15, ease: "easeInOut" }}
       >
-        <div className="relative z-10 flex flex-col items-center px-8 w-full max-w-md">
+        <div className="flex flex-col items-center w-full max-w-md">
           <span
-            className="text-[52px] md:text-[70px] mb-3 md:mb-4 inline-block"
+            className="text-[44px] md:text-[60px] mb-3 md:mb-4 inline-block"
             style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
           >
             🔐
           </span>
-          <h2 className="text-center text-[40px] md:text-[56px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
-            {isSignUp ? <>sign up<br/>to save her</> : <>log in<br/>to save her</>}
+          <h2 className="text-center text-[28px] md:text-[40px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
+            sign up<br/>to save her
           </h2>
           <div className="mt-8 w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             <button
@@ -1262,15 +1293,15 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
               {googleLoading ? <><Loader2 className="animate-spin" size={18} />connecting...</> : (
                 <>
                   <GoogleIcon />
-                  {isSignUp ? "sign up with google" : "log in with google"}
+                  sign up with google
                 </>
               )}
             </button>
 
             <div className="flex items-center gap-3">
-              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(0 0% 0%)" }} />
+              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
               <span className="text-[11px] font-extrabold lowercase text-white">or use email</span>
-              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(0 0% 0%)" }} />
+              <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
             </div>
 
             <input
@@ -1297,12 +1328,14 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
               className="w-full h-14 text-sm font-[900] lowercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 hover:opacity-90"
               style={{ borderRadius: 8, background: '#ffe603', color: '#000000' }}
             >
-              {emailLoading ? <><Loader2 className="animate-spin" size={18} />{isSignUp ? "signing up..." : "logging in..."}</> : <>{isSignUp ? "sign up" : "log in"}<ArrowRight size={14} /></>}
+              {emailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
             </button>
           </div>
-
         </div>
       </motion.div>
+      <div className="flex items-center justify-center" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 24px)", paddingTop: 8 }}>
+        <NavArrow direction="left" onClick={() => window.history.back()} />
+      </div>
     </div>,
     document.body,
   );
