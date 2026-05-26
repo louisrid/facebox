@@ -1137,9 +1137,10 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
 GuidedCreator.displayName = "GuidedCreator";
 
 /* ══════════════════════════════════════════
-   SIGN-IN OVERLAY
+   SIGNUP SLIDE — the auth screen of the guided flow,
+   shown on /choose-face when the user is not logged in.
    ══════════════════════════════════════════ */
-export const SignInOverlay = ({ open, onSignedIn }: { open: boolean; onSignedIn: () => void }) => {
+export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: () => void }) => {
   const { user, signIn, signUp } = useAuth();
   const [googleLoading, setGoogleLoading] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
