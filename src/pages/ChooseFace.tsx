@@ -13,7 +13,7 @@ import { displayAge } from "@/lib/displayAge";
 import PageTitle from "@/components/PageTitle";
 import ImageZoomViewer from "@/components/ImageZoomViewer";
 
-import { SignInOverlay } from "@/components/GuidedCreator";
+import { SignupSlide } from "@/components/GuidedCreator";
 import { toast } from "@/components/ui/sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGems } from "@/contexts/CreditsContext";
@@ -776,7 +776,7 @@ const ChooseFace = () => {
   return (
     <>
       <div className="relative min-h-screen overflow-hidden w-full">
-        <SignInOverlay open={showSignIn} onSignedIn={handleSignedIn} />
+        <SignupSlide open={showSignIn} onSignedIn={handleSignedIn} />
 
         <AnimatePresence>
           {loading && (
