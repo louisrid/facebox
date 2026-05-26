@@ -200,7 +200,6 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
   const [handoffLoading, setHandoffLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUpMode, setIsSignUpMode] = useState(true);
 
   useEffect(() => {
     const resetLoading = () => setGoogleLoading(false);
@@ -221,6 +220,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
     sessionStorage.setItem(FLOW_STATE_KEY, JSON.stringify({ selections }));
     sessionStorage.setItem("facefox_signup_gate_active", "1");
     sessionStorage.setItem("facefox_post_auth_home", "1");
+    localStorage.setItem("facefox_pending_creation", JSON.stringify(selections));
   }, [selections]);
 
   const navigateToChoose = useTransitionNavigate();
@@ -290,30 +290,29 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
     setHandoffLoading(true);
     persistSignupHandoff();
     try {
-      if (isSignUpMode) {
-        try {
-          await signUp(email.trim(), password);
-          window.setTimeout(() => {
-            if (!user) {
-              setEmailLoading(false);
-              setHandoffLoading(false);
-              toast.success("check email");
-            }
-          }, 1500);
-        }
-        catch (err: any) {
-          if (err.message?.toLowerCase().includes("already registered")) {
-        toast.error("press login instead!");
-            setIsSignUpMode(false);
+      try {
+        await signUp(email.trim(), password);
+        window.setTimeout(() => {
+          if (!user) {
             setEmailLoading(false);
             setHandoffLoading(false);
-            sessionStorage.removeItem("facefox_signup_gate_active");
-            sessionStorage.removeItem("facefox_post_auth_home");
-            return;
+            toast.success("check email");
           }
-          else throw err;
+        }, 1500);
+      }
+      catch (err: any) {
+        if (err.message?.toLowerCase().includes("already registered")) {
+          toast.error("you already have an account, log in");
+          setEmailLoading(false);
+          setHandoffLoading(false);
+          sessionStorage.removeItem("facefox_signup_gate_active");
+          sessionStorage.removeItem("facefox_post_auth_home");
+          localStorage.removeItem("facefox_pending_creation");
+          window.location.href = "/auth";
+          return;
         }
-      } else { await signIn(email.trim(), password); }
+        else throw err;
+      }
     } catch {
       toast.error("try again");
       setEmailLoading(false);
@@ -335,16 +334,16 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
   }
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
+    <div className="flex w-full flex-col items-center">
       <div className="flex flex-col items-center px-8 w-full max-w-md">
         <span
-          className="text-[52px] md:text-[70px] mb-3 md:mb-4 inline-block"
+          className="text-[44px] md:text-[60px] mb-3 md:mb-4 inline-block"
           style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
         >
           🔐
         </span>
-        <h2 className="text-center text-[40px] md:text-[56px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
-           {isSignUpMode ? <>sign up<br/>to save her</> : <>log in<br/>to save her</>}
+        <h2 className="text-center text-[28px] md:text-[40px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
+           sign up<br/>to save her
         </h2>
 
         <div className="mt-8 w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
@@ -357,7 +356,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
             {googleLoading ? <><Loader2 className="animate-spin" size={18} />connecting...</> : (
               <>
                 <GoogleIcon />
-                {isSignUpMode ? "sign up with google" : "log in with google"}
+                sign up with google
               </>
             )}
           </button>
@@ -392,7 +391,7 @@ const SignupGate = ({ selections }: { selections: GuidedSelections }) => {
             className="w-full h-14 text-sm font-[900] lowercase flex items-center justify-center gap-2 transition-all disabled:opacity-50 hover:opacity-90"
             style={{ borderRadius: 8, background: '#ffe603', color: '#000000' }}
           >
-            {emailLoading ? <><Loader2 className="animate-spin" size={18} />{isSignUpMode ? "signing up..." : "logging in..."}</> : <>{isSignUpMode ? "sign up" : "log in"}<ArrowRight size={14} /></>}
+            {emailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
           </button>
 
         </div>
@@ -1295,15 +1294,6 @@ export const SignInOverlay = ({ open, onSignedIn }: { open: boolean; onSignedIn:
               style={{ borderRadius: 8, background: '#ffe603', color: '#000000' }}
             >
               {emailLoading ? <><Loader2 className="animate-spin" size={18} />{isSignUp ? "signing up..." : "logging in..."}</> : <>{isSignUp ? "sign up" : "log in"}<ArrowRight size={14} /></>}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIsSignUp((v) => !v)}
-              className="w-full text-center text-[11px] font-extrabold lowercase text-white hover:opacity-80 transition-colors duration-150"
-            >
-              {isSignUp ? "already have an account? " : "no account? "}
-              <span className="underline">{isSignUp ? "log in" : "sign up"}</span>
             </button>
           </div>
 

@@ -151,6 +151,7 @@ const FreshLoadRedirect = () => {
 
   useEffect(() => {
     if (loading) return;
+    if (sessionStorage.getItem("facefox_signup_gate_active") === "1") return;
 
     // Reset the one-shot guard whenever the auth identity changes (sign-in or sign-out).
     // Previously this only ever fired once per page load, so a sign-out from a
@@ -203,6 +204,7 @@ const PostAuthHomeRedirect = () => {
 
   useEffect(() => {
     if (loading || !user) return;
+    if (sessionStorage.getItem("facefox_signup_gate_active") === "1") return;
     if (sessionStorage.getItem(POST_AUTH_HOME_KEY) !== "1") return;
 
     const resumeUrl = sessionStorage.getItem("facefox_resume_url");
