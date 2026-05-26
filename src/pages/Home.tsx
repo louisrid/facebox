@@ -124,6 +124,10 @@ const Home = () => {
           sessionStorage.removeItem("facefox_face_options");
           sessionStorage.removeItem("facefox_pending_char_id");
           sessionStorage.removeItem("facefox_guided_flow_state");
+          sessionStorage.removeItem("facefox_post_auth_home");
+          sessionStorage.removeItem("facefox_resume_url");
+          sessionStorage.removeItem("facefox_signup_gate_active");
+          sessionStorage.removeItem("facefox_signup_only");
           sessionStorage.setItem(DISMISSED_KEY, "1");
           navigate("/choose-face", { state: { prompt, freshCreation: true } });
           return;
