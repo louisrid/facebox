@@ -1141,7 +1141,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
       </motion.div>
       <div className="flex flex-col items-center" style={{ flexShrink: 0, paddingBottom: "max(env(safe-area-inset-bottom, 0px), 2%)" }}>
         <div className="flex items-center justify-center gap-4 md:gap-6">
-          <NavArrow direction="left" onClick={handleBack} />
+          <NavArrow direction="left" onClick={handleBack} colorOverride="#00e0ff" />
         </div>
         <div style={{ height: 24, pointerEvents: "none" }} />
       </div>
