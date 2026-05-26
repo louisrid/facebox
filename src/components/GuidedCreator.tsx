@@ -1091,7 +1091,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
         transition={{ duration: 0.8, delay: 0.15, ease: "easeInOut" }}
       >
         <div className="w-full max-w-md mx-auto flex flex-col items-center">
-          <h2 className={`${SLIDE_TITLE_CLASS} mb-6 md:mb-8`}>sign up to create</h2>
+          <h2 className="text-center text-[28px] md:text-[44px] font-[900] lowercase leading-[1.05] tracking-tight text-white mb-6 md:mb-8 whitespace-nowrap">sign up to <span style={{ color: "#00e0ff" }}>create</span> 🖌️</h2>
           <div className="w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             <button
               onClick={handleGoogle}
