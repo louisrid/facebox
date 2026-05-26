@@ -1104,9 +1104,11 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
               className="flex items-center justify-center gap-4 md:gap-6"
             >
               <motion.div animate={backArrowShaking ? { x: [0, -6, 6, -4, 4, 0] } : {}} transition={{ duration: 0.4 }}>
-                <NavArrow direction="left" onClick={goBack} />
+                <NavArrow direction="left" onClick={goBack} colorOverride={isSignupSlide ? "#00e0ff" : undefined} />
               </motion.div>
-              <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
+              {!isSignupSlide && (
+                <NavArrow direction="right" onClick={advance} disabled={!canAdvance && currentTraitIndex >= 0} colorOverride={isCreateSlide ? "#00e0ff" : undefined} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
