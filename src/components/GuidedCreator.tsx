@@ -288,6 +288,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
           try {
             const draft = JSON.parse(draftBackup);
             setSelections({
+              ...emptySelections,
               characterName: draft.characterName || "",
               skin: draft.skin || "",
               bodyType: draft.bodyType || "",
