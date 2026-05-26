@@ -679,11 +679,11 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   const setTrait = (key: string, value: string) => setSelections((prev) => ({ ...prev, [key]: value }));
   const triggerShake = () => { setShaking(true); setTimeout(() => setShaking(false), 500); };
 
-  const maybeShowNameToast = useCallback((nextName: string) => {
-    if (!visible || !isNameSlide || nameToastShown || !nextName.trim()) return;
-    setNameToastShown(true);
-    toast.success(getRandomNameToast());
-  }, [visible, isNameSlide, nameToastShown]);
+  const maybeShowNameToast = useCallback((_nextName: string) => {
+    // "great choice" toast disabled per user request
+    void nameToastShown;
+    void setNameToastShown;
+  }, [nameToastShown]);
 
   const updateCharacterName = useCallback((nextName: string) => {
     setSelections((p) => ({ ...p, characterName: nextName }));
@@ -693,9 +693,8 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   const randomiseName = useCallback(() => {
     const nextName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
     setSelections((p) => ({ ...p, characterName: nextName }));
-    if (visible && isNameSlide) {
-      toast.success(getRandomNameToast());
-    }
+    // "great choice" toast disabled per user request
+    void visible; void isNameSlide;
   }, [visible, isNameSlide]);
 
   const advance = useCallback(() => {

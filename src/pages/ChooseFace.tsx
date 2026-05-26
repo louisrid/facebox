@@ -388,10 +388,8 @@ const ChooseFace = () => {
   const handleFaceClick = (i: number) => {
     setSelectedIndex(i);
     setPulseIndex(i);
-    if (!hasShownGreatChoiceRef.current) {
-      toast("great choice");
-      hasShownGreatChoiceRef.current = true;
-    }
+    // "great choice" toast disabled per user request
+    void hasShownGreatChoiceRef;
     window.setTimeout(() => setPulseIndex((current) => (current === i ? null : current)), 360);
   };
 
