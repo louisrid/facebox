@@ -351,6 +351,116 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     onComplete(final);
   }, [onComplete]);
 
+  /* ── Signup slide state + handlers (inline form rendered when step type is "signup") ── */
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [signupGoogleLoading, setSignupGoogleLoading] = useState(false);
+  const [signupEmailLoading, setSignupEmailLoading] = useState(false);
+  const wasOnSignupRef = useRef(false);
+
+  // Persist draft to localStorage so Home.tsx's pending-creation rescue path
+  // can recover after OAuth redirect or email verification round-trip.
+  const persistPendingCreationFromSelections = useCallback(() => {
+    const s = selectionsRef.current;
+    const draft = {
+      characterName: s.characterName,
+      skin: s.skin,
+      bodyType: s.bodyType,
+      bustSize: s.bustSize,
+      hairStyle: s.hairStyle,
+      hairColour: s.hairColour,
+      eye: s.eye,
+      age: s.age,
+      description: s.description || "",
+    };
+    localStorage.setItem("facefox_draft_backup", JSON.stringify(draft));
+    localStorage.setItem("facefox_pending_creation", JSON.stringify(draft));
+  }, []);
+
+  const handleSignupGoogle = useCallback(async () => {
+    const _blackout = document.createElement('div');
+    _blackout.style.cssText = 'position:fixed;inset:0;background:#000;z-index:2147483645';
+    document.body.appendChild(_blackout);
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(undefined))));
+    setSignupGoogleLoading(true);
+    persistPendingCreationFromSelections();
+    sessionStorage.setItem("facefox_signup_gate_active", "1");
+    sessionStorage.setItem("facefox_post_auth_home", "1");
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+        extraParams: { prompt: "select_account" },
+      });
+      if (result?.error) {
+        sessionStorage.removeItem("facefox_post_auth_home");
+        sessionStorage.removeItem("facefox_signup_gate_active");
+        toast.error("sign up error");
+        setSignupGoogleLoading(false);
+      }
+    } catch {
+      sessionStorage.removeItem("facefox_post_auth_home");
+      sessionStorage.removeItem("facefox_signup_gate_active");
+      toast.error("sign up error");
+      setSignupGoogleLoading(false);
+    }
+  }, [persistPendingCreationFromSelections]);
+
+  const handleSignupEmail = useCallback(async () => {
+    if (!signupEmail.trim() || !signupPassword.trim()) { toast.error("fill details"); return; }
+    if (signupPassword.length < 5) { toast.error("min. 5 chars"); return; }
+    setSignupEmailLoading(true);
+    persistPendingCreationFromSelections();
+    sessionStorage.setItem("facefox_signup_gate_active", "1");
+    sessionStorage.setItem("facefox_post_auth_home", "1");
+    try {
+      try {
+        await signUp(signupEmail.trim(), signupPassword);
+        window.setTimeout(() => {
+          if (!user) {
+            setSignupEmailLoading(false);
+            toast.success("check email");
+          }
+        }, 1500);
+      }
+      catch (err: any) {
+        if (err.message?.toLowerCase().includes("already registered")) {
+          toast.error("you already have an account, log in");
+          setSignupEmailLoading(false);
+          sessionStorage.removeItem("facefox_signup_gate_active");
+          sessionStorage.removeItem("facefox_post_auth_home");
+          window.location.href = "/auth";
+          return;
+        }
+        else throw err;
+      }
+    } catch {
+      toast.error("try again");
+      setSignupEmailLoading(false);
+      sessionStorage.removeItem("facefox_signup_gate_active");
+      sessionStorage.removeItem("facefox_post_auth_home");
+    }
+  }, [signupEmail, signupPassword, signUp, user, persistPendingCreationFromSelections]);
+
+  // Track whether we were on the signup step. Survives the flowSteps shrink
+  // that happens when user becomes authed (signup step disappears from flow).
+  useEffect(() => {
+    if (isSignupSlide) wasOnSignupRef.current = true;
+  }, [isSignupSlide]);
+
+  // Reset the signup-arrival flag when the creator closes so a future open
+  // doesn't trigger a stale auto-complete on the next auth state change.
+  useEffect(() => {
+    if (!visible) wasOnSignupRef.current = false;
+  }, [visible]);
+
+  // When user becomes authed and we were on the signup step, complete the flow.
+  useEffect(() => {
+    if (visible && user && wasOnSignupRef.current) {
+      wasOnSignupRef.current = false;
+      completeCookingFlow();
+    }
+  }, [visible, user, completeCookingFlow]);
+
   /* ── Compute what the current step represents ── */
   const currentStep = flowSteps[step] ?? flowSteps[flowSteps.length - 1];
   const stepType = currentStep.type;
