@@ -1074,7 +1074,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col" style={{ backgroundColor: "#000000" }}>
-      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
+      <div className="shrink-0 pointer-events-none" style={{ paddingTop: 11 }}>
         <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
           <span
             className="text-[22px] md:text-[28px] text-white tracking-[-0.5px] leading-none lowercase"
@@ -1091,7 +1091,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
         transition={{ duration: 0.8, delay: 0.15, ease: "easeInOut" }}
       >
         <div className="w-full max-w-md mx-auto flex flex-col items-center">
-          <h2 className={`${SLIDE_TITLE_CLASS} mb-6 md:mb-8`}>sign up to create</h2>
+          <h2 className="text-center text-[28px] md:text-[44px] font-[900] lowercase leading-[1.05] tracking-tight text-white mb-6 md:mb-8 whitespace-nowrap">sign up to <span style={{ color: "#00e0ff" }}>create</span> 🖌️</h2>
           <div className="w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             <button
               onClick={handleGoogle}
@@ -1141,7 +1141,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
       </motion.div>
       <div className="flex flex-col items-center" style={{ flexShrink: 0, paddingBottom: "max(env(safe-area-inset-bottom, 0px), 2%)" }}>
         <div className="flex items-center justify-center gap-4 md:gap-6">
-          <NavArrow direction="left" onClick={handleBack} />
+          <NavArrow direction="left" onClick={handleBack} colorOverride="#00e0ff" />
         </div>
         <div style={{ height: 24, pointerEvents: "none" }} />
       </div>
