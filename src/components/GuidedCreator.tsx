@@ -568,7 +568,7 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
   // Delay arrow fade-in by 450ms so arrows enter in sync with the incoming slide,
   // not overlapping the outgoing no-arrow slide (hero or signup) as it fades out.
   // Arrow fade-OUT remains instant to run in parallel with the current slide exit.
-  const showNavigation = !isHeroSlide && !isSignupScreen;
+  const showNavigation = !isHeroSlide;
   const [showNavigationDelayed, setShowNavigationDelayed] = useState(showNavigation);
   const prevVisibleForNavRef = useRef(visible);
   const prevStepTypeForNavRef = useRef(stepType);
