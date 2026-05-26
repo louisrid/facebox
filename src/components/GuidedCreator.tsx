@@ -215,19 +215,22 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
 
   const flowSteps: FlowStep[] = (() => {
     const traitSteps = TRAITS.map((_, traitIndex) => ({ type: "trait", traitIndex } as const));
-
-    switch (flowVariant) {
-      case "guest-onboarding":
-        return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
-      case "member-onboarding":
-        return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
-      case "returning-skip":
-        return [{ type: "name" }, ...traitSteps, { type: "create" }];
-      case "returning-full":
-      default:
-        return [{ type: "hero" }, { type: "name" }, ...traitSteps, { type: "create" }];
-    }
+    const baseSteps: FlowStep[] = (() => {
+      switch (flowVariant) {
+        case "guest-onboarding":
+          return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
+        case "member-onboarding":
+          return [{ type: "hero" }, { type: "set1slide1" }, { type: "name" }, ...traitSteps, { type: "create" }];
+        case "returning-skip":
+          return [{ type: "name" }, ...traitSteps, { type: "create" }];
+        case "returning-full":
+        default:
+          return [{ type: "hero" }, { type: "name" }, ...traitSteps, { type: "create" }];
+      }
+    })();
+    return isLoggedIn ? baseSteps : [...baseSteps, { type: "signup" } as const];
   })();
+
 
   const TOTAL = flowSteps.length;
 
