@@ -414,9 +414,7 @@ const ChooseFace = () => {
 
   const normaliseDraftBodyType = (value?: string) => {
     const key = (value || "regular").toLowerCase();
-    if (key === "thin") return "slim";
-    if (key === "average") return "regular";
-    if (key === "slim" || key === "curvy") return key;
+    if (key === "curvy") return "curvy";
     return "regular";
   };
 
