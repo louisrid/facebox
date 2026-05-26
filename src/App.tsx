@@ -204,6 +204,7 @@ const PostAuthHomeRedirect = () => {
 
   useEffect(() => {
     if (loading || !user) return;
+    if (sessionStorage.getItem("facefox_signup_gate_active") === "1") return;
     if (sessionStorage.getItem(POST_AUTH_HOME_KEY) !== "1") return;
 
     const resumeUrl = sessionStorage.getItem("facefox_resume_url");
