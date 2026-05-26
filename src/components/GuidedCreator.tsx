@@ -441,6 +441,15 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     }
   }, [signupEmail, signupPassword, signUp, user, persistPendingCreationFromSelections]);
 
+  /* ── Compute what the current step represents ── */
+  const currentStep = flowSteps[step] ?? flowSteps[flowSteps.length - 1];
+  const stepType = currentStep.type;
+  const isHeroSlide = stepType === "hero";
+  const isSet1Slide1 = stepType === "set1slide1";
+  const isNameSlide = stepType === "name";
+  const isCreateSlide = stepType === "create";
+  const isSignupSlide = stepType === "signup";
+
   // Track whether we were on the signup step. Survives the flowSteps shrink
   // that happens when user becomes authed (signup step disappears from flow).
   useEffect(() => {
@@ -461,14 +470,6 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
     }
   }, [visible, user, completeCookingFlow]);
 
-  /* ── Compute what the current step represents ── */
-  const currentStep = flowSteps[step] ?? flowSteps[flowSteps.length - 1];
-  const stepType = currentStep.type;
-  const isHeroSlide = stepType === "hero";
-  const isSet1Slide1 = stepType === "set1slide1";
-  const isNameSlide = stepType === "name";
-  const isCreateSlide = stepType === "create";
-  const isSignupSlide = stepType === "signup";
 
   // Tracks the slide type currently VISIBLE on screen. Updates after the exit animation
   // completes (450ms), so wrapper alignment stays in sync with the outgoing slide
