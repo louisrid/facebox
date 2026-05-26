@@ -163,6 +163,7 @@ interface GuidedCreatorProps {
   onComplete: (selections: GuidedSelections) => void;
   onExit: (partialSelections: Partial<GuidedSelections>) => void;
   skipWelcome?: boolean;
+  resumeAtCreate?: boolean;
 }
 
 type FlowStep =
@@ -191,7 +192,7 @@ const normaliseLegacySelections = (partial: Partial<GuidedSelections>): Partial<
 
 
 
-const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, onComplete, onExit, skipWelcome = false }, _ref) => {
+const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, onComplete, onExit, skipWelcome = false, resumeAtCreate = false }, _ref) => {
   const { user } = useAuth();
   const navigateTo = useTransitionNavigate();
   const isLoggedIn = !!user;
@@ -281,15 +282,40 @@ const GuidedCreator = forwardRef<HTMLDivElement, GuidedCreatorProps>(({ open, on
 
   useEffect(() => {
     if (open) {
-      sessionStorage.removeItem("facefox_guided_flow_state");
-      setStep(flowVariant === "member-onboarding" ? 1 : 0);
-      setSelections({ ...emptySelections });
+      if (resumeAtCreate) {
+        const draftBackup = localStorage.getItem("facefox_draft_backup");
+        if (draftBackup) {
+          try {
+            const draft = JSON.parse(draftBackup);
+            setSelections({
+              characterName: draft.characterName || "",
+              skin: draft.skin || "",
+              bodyType: draft.bodyType || "",
+              bustSize: draft.bustSize || "",
+              hairStyle: draft.hairStyle || "",
+              hairColour: draft.hairColour || "",
+              eye: draft.eye || "",
+              age: draft.age || "",
+              description: draft.description || "",
+            });
+          } catch {
+            setSelections({ ...emptySelections });
+          }
+        } else {
+          setSelections({ ...emptySelections });
+        }
+        setStep(flowSteps.length - 1);
+      } else {
+        sessionStorage.removeItem("facefox_guided_flow_state");
+        setStep(flowVariant === "member-onboarding" ? 1 : 0);
+        setSelections({ ...emptySelections });
+      }
       setShaking(false);
       setVisible(true);
       setNameToastShown(false);
       setBackArrowShaking(false);
     }
-  }, [open, flowVariant]);
+  }, [open, flowVariant, resumeAtCreate, flowSteps.length]);
 
   useEffect(() => { persistFlow(); }, [persistFlow, step, selections]);
 
@@ -921,6 +947,7 @@ GuidedCreator.displayName = "GuidedCreator";
    ══════════════════════════════════════════ */
 export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: () => void }) => {
   const { user, signUp } = useAuth();
+  const navigate = useTransitionNavigate();
   const [googleLoading, setGoogleLoading] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -1032,14 +1059,24 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
     }
   };
 
+  const handleBack = () => {
+    sessionStorage.removeItem("facefox_signup_gate_active");
+    sessionStorage.removeItem("facefox_post_auth_home");
+    sessionStorage.removeItem("facefox_signup_only");
+    sessionStorage.removeItem("facefox_resume_url");
+    localStorage.removeItem("facefox_pending_creation");
+    sessionStorage.removeItem("facefox_creator_dismissed");
+    navigate("/", { state: { openCreator: true, resumeAtCreate: true } });
+  };
+
   if (!visible) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex flex-col" style={{ backgroundColor: "#000000" }}>
-      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
-        <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
+    <div className="fixed inset-0 z-[9999] flex flex-col overflow-y-auto" style={{ backgroundColor: "#000000" }}>
+      <div className="shrink-0" style={{ paddingTop: 23 }}>
+        <div className="mx-auto flex h-[63px] w-full max-w-lg items-center justify-center px-[28px] md:h-[80px] md:max-w-3xl md:px-[44px]">
           <span
-            className="text-[22px] md:text-[28px] text-white tracking-[-0.5px] leading-none lowercase"
+            className="text-[20px] md:text-[27px] text-white tracking-[-0.5px] leading-none lowercase"
             style={{ fontWeight: 900 }}
           >
             facebox
@@ -1047,22 +1084,13 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
         </div>
       </div>
       <motion.div
-        className="flex-1 flex flex-col items-center justify-center px-8"
+        className="flex-1 flex flex-col items-center px-6 md:px-12 pt-[34px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.15, ease: "easeInOut" }}
       >
-        <div className="flex flex-col items-center w-full max-w-md">
-          <span
-            className="text-[44px] md:text-[60px] mb-3 md:mb-4 inline-block"
-            style={{ animation: "emoji-bounce 1.6s ease-in-out infinite" }}
-          >
-            🔐
-          </span>
-          <h2 className="text-center text-[28px] md:text-[40px] font-[900] lowercase leading-[1.05] tracking-tight text-white">
-            sign up<br/>to save her
-          </h2>
-          <div className="mt-8 w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
+        <div className="w-full max-w-md mx-auto flex flex-col items-center">
+          <div className="w-full rounded-[8px] border-[2px] border-[hsl(var(--border-mid))] p-5 md:p-8 space-y-3 md:space-y-4" style={{ backgroundColor: "hsl(var(--card))" }}>
             <button
               onClick={handleGoogle}
               disabled={googleLoading || emailLoading}
@@ -1076,13 +1104,11 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
                 </>
               )}
             </button>
-
             <div className="flex items-center gap-3">
               <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
               <span className="text-[11px] font-extrabold lowercase text-white">or use email</span>
               <div className="flex-1 h-[2px]" style={{ backgroundColor: "hsl(var(--border-mid))" }} />
             </div>
-
             <input
               type="email" placeholder="email" value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -1100,7 +1126,6 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
               style={{ borderRadius: 8, border: "2px solid hsl(var(--border-mid))", backgroundColor: "hsl(var(--card))" }}
               disabled={emailLoading || googleLoading}
             />
-
             <button
               onClick={handleEmailAuth}
               disabled={emailLoading || googleLoading}
@@ -1110,11 +1135,11 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
               {emailLoading ? <><Loader2 className="animate-spin" size={18} />signing up...</> : <>sign up<ArrowRight size={14} /></>}
             </button>
           </div>
+          <div className="flex items-center justify-center mt-6 md:mt-8" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 24px)" }}>
+            <NavArrow direction="left" onClick={handleBack} />
+          </div>
         </div>
       </motion.div>
-      <div className="flex items-center justify-center" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 24px)", paddingTop: 8 }}>
-        <NavArrow direction="left" onClick={() => window.history.back()} />
-      </div>
     </div>,
     document.body,
   );
