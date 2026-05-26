@@ -1074,7 +1074,7 @@ export const SignupSlide = ({ open, onSignedIn }: { open: boolean; onSignedIn: (
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col" style={{ backgroundColor: "#000000" }}>
-      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none" style={{ paddingTop: 11 }}>
+      <div className="shrink-0 pointer-events-none" style={{ paddingTop: 11 }}>
         <div className="mx-auto flex h-[66px] w-full max-w-lg items-center justify-center px-[20px] md:h-[85px] md:max-w-3xl md:px-[36px]">
           <span
             className="text-[22px] md:text-[28px] text-white tracking-[-0.5px] leading-none lowercase"
