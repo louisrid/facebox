@@ -110,7 +110,7 @@ const Home = () => {
           const draft = {
             characterName: sel.characterName,
             skin: sel.skin || "tan",
-            bodyType: sel.bodyType || "regular",
+            bodyType: sel.bodyType || "slim",
             bustSize: sel.bustSize || "regular",
             hairStyle: sel.hairStyle || "long straight",
             hairColour: sel.hairColour || "brunette",
@@ -176,7 +176,7 @@ const Home = () => {
     const draft = {
       characterName: selections.characterName,
       skin: selections.skin || "tan",
-      bodyType: selections.bodyType || "regular",
+      bodyType: selections.bodyType || "slim",
       bustSize: selections.bustSize || "regular",
       hairStyle: selections.hairStyle || "long straight",
       hairColour: selections.hairColour || "brunette",
