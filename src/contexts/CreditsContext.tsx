@@ -135,12 +135,22 @@ export const GemsProvider = ({ children }: { children: ReactNode }) => {
     if (typeof window === "undefined") return;
     const handleRefresh = () => { void fetchGems(); };
     const handleVisibility = () => { if (document.visibilityState === "visible") void fetchGems(); };
+    const handleOnboardingChanged = () => {
+      // Onboarding state may have flipped (e.g. user just completed onboarding); refresh
+      // gems so the mask drops immediately rather than waiting for the next focus event.
+      if (!user) return;
+      const cached = readCachedOnboardingState(user.id);
+      if (cached) setOnboardingComplete(cached.onboardingComplete);
+      void fetchGems();
+    };
     window.addEventListener("focus", handleRefresh);
     window.addEventListener("facefox:generations-changed", handleRefresh);
+    window.addEventListener("facefox:onboarding-changed", handleOnboardingChanged);
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       window.removeEventListener("focus", handleRefresh);
       window.removeEventListener("facefox:generations-changed", handleRefresh);
+      window.removeEventListener("facefox:onboarding-changed", handleOnboardingChanged);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [authLoading, fetchGems, readCachedGems, user]);
