@@ -942,7 +942,7 @@ const ChooseFace = () => {
                     const draft = JSON.parse(raw);
                     const traitItems = [
                       { label: "skin", value: draft.skin },
-                      { label: "body", value: draft.bodyType },
+                      { label: "body", value: draft.bodyType === "regular" ? "slim" : draft.bodyType },
                       { label: "size", value: draft.bustSize === "XL" ? "XL" : "regular" },
                       { label: "age", value: displayAge(draft.characterName || "draft", draft.age) },
                       { label: "hair colour", value: draft.hairColour },
