@@ -859,7 +859,7 @@ const ChooseFace = () => {
                         className="relative aspect-[3/4] w-full transition-all duration-300 ease-out"
                         style={{
                           borderRadius: 8,
-                          border: selectedIndex === i ? "2px solid #ffe603" : "2px solid transparent",
+                          border: selectedIndex === i ? "4px solid #ffe603" : "4px solid transparent",
                           overflow: "hidden",
                         }}
                       >
@@ -883,11 +883,11 @@ const ChooseFace = () => {
                     className="flex h-14 md:h-16 w-full items-center justify-center gap-2 text-lg md:text-xl font-[900] lowercase transition-none disabled:cursor-not-allowed"
                     style={{
                       borderRadius: 8,
-                      backgroundColor: selectedIndex !== null ? "#ffffff" : "hsl(var(--card))",
+                      backgroundColor: selectedIndex !== null ? "#ffe603" : "hsl(var(--card))",
                       color: selectedIndex !== null ? "#000000" : "#ffffff",
                     }}
                   >
-                    {selectedIndex !== null ? "use this face →" : "select a face"}
+                    select face
                   </button>
 
                   <button
