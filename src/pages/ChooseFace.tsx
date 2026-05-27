@@ -413,9 +413,9 @@ const ChooseFace = () => {
   };
 
   const normaliseDraftBodyType = (value?: string) => {
-    const key = (value || "regular").toLowerCase();
+    const key = (value || "slim").toLowerCase();
     if (key === "curvy") return "curvy";
-    return "regular";
+    return "slim";
   };
 
   const normaliseDraftBustSize = (value?: string) => (value === "XL" || value === "extra large" || value === "large" ? "XL" : "regular");
