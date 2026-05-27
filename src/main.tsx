@@ -7,6 +7,11 @@ import { registerBlockingLoader } from "@/lib/startupSplash";
 // so they land on the hero/start screen fresh
 sessionStorage.removeItem("facefox_guided_flow_state");
 
+// Snapshot whether a signup flow was in progress BEFORE clearing the flag,
+// so the pending-creation rescue path survives the OAuth/email-verification
+// round-trip and Home can navigate the user to /choose-face on return.
+const wasSignupInProgress = sessionStorage.getItem("facefox_signup_gate_active") === "1";
+
 sessionStorage.removeItem("facefox_post_auth_home");
 sessionStorage.removeItem("facefox_signup_gate_active");
 sessionStorage.removeItem("facefox_face_options");
@@ -16,10 +21,9 @@ sessionStorage.removeItem("facefox_character_draft");
 sessionStorage.removeItem("facefox_pending_char_id");
 sessionStorage.removeItem("facefox_selected_face");
 sessionStorage.removeItem("facefox_hero_seen");
-
 sessionStorage.removeItem("facefox_guided_flow_state");
 
-if (sessionStorage.getItem("facefox_signup_gate_active") !== "1") {
+if (!wasSignupInProgress) {
   localStorage.removeItem("facefox_pending_creation");
 }
 
