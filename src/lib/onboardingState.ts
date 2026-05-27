@@ -63,16 +63,41 @@ export const needsOnboardingRedirect = (state: CachedOnboardingState | null | un
   !!state && !state.onboardingComplete && state.characterCount === 0;
 
 export const fetchAndCacheOnboardingState = async (userId: string) => {
-  const [profileRes, charsRes] = await Promise.all([
-    supabase.from("profiles").select("onboarding_complete").eq("user_id", userId).maybeSingle(),
-    supabase.from("characters").select("id", { count: "exact", head: true }).eq("user_id", userId),
+  const withTimeout = <T,>(p: Promise<T>): Promise<T> => Promise.race([
+    p,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("onboarding fetch timeout")), 5000)),
   ]);
 
-  // Treat Supabase error responses as failures: if either query failed, fall back to the
-  // previously cached state so we never overwrite a known-onboarded user with `false` due
-  // to a transient backend hiccup. This prevents the yellow loader from getting stuck
-  // when a silent failure flips onboardingComplete to false on refresh.
-  if (profileRes.error || charsRes.error) {
+  try {
+    const [profileRes, charsRes] = await Promise.all([
+      withTimeout(Promise.resolve(supabase.from("profiles").select("onboarding_complete").eq("user_id", userId).maybeSingle())),
+      withTimeout(Promise.resolve(supabase.from("characters").select("id", { count: "exact", head: true }).eq("user_id", userId))),
+    ]);
+
+    // Treat Supabase error responses as failures: if either query failed, fall back to the
+    // previously cached state so we never overwrite a known-onboarded user with `false` due
+    // to a transient backend hiccup. This prevents the yellow loader from getting stuck
+    // when a silent failure flips onboardingComplete to false on refresh.
+    if (profileRes.error || charsRes.error) {
+      const previous = readCachedOnboardingState(userId);
+      if (previous) return previous;
+      return writeCachedOnboardingState({
+        userId,
+        onboardingComplete: false,
+        characterCount: 0,
+        resolvedAt: Date.now(),
+      });
+    }
+
+    return writeCachedOnboardingState({
+      userId,
+      onboardingComplete: !!profileRes.data?.onboarding_complete,
+      characterCount: charsRes.count ?? 0,
+      resolvedAt: Date.now(),
+    });
+  } catch {
+    // Timeout or thrown error: fall back to cache, or assume not-onboarded if no cache.
+    // This prevents the splash bar from hanging indefinitely on a slow Supabase query.
     const previous = readCachedOnboardingState(userId);
     if (previous) return previous;
     return writeCachedOnboardingState({
@@ -82,11 +107,4 @@ export const fetchAndCacheOnboardingState = async (userId: string) => {
       resolvedAt: Date.now(),
     });
   }
-
-  return writeCachedOnboardingState({
-    userId,
-    onboardingComplete: !!profileRes.data?.onboarding_complete,
-    characterCount: charsRes.count ?? 0,
-    resolvedAt: Date.now(),
-  });
 };
