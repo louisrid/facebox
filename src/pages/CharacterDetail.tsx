@@ -345,7 +345,7 @@ const CharacterDetail = () => {
 
   const traits: { label: string; value: string }[] = [
     { label: "skin", value: skinLabel || "—" },
-    { label: "body", value: character.body || "—" },
+    { label: "body", value: character.body === "regular" ? "slim" : (character.body || "—") },
     { label: "size", value: ((character.bust_size || "regular") === "XL" || character.bust_size === "extra large") ? "XL" : (character.bust_size || "regular") },
     { label: "age", value: displayAge(character.id, character.age) },
     { label: "hair colour", value: character.hair || "—" },
